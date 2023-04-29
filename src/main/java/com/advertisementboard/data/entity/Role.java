@@ -6,7 +6,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,28 +16,21 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Table(name = "user")
+@Table(name = "role")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Getter
 @Setter
-public class User {
+public class Role {
 
     @Id
+    @GeneratedValue
+    private Integer id;
+
     @Column(nullable = false, unique = true)
-    private String login;
-
-    @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false)
-    private String password;
+    private UserRole name;
 
     @ManyToMany
-    private List<Role> roles;
-
-    @OneToMany
-    private List<Advertisement> advertisements;
-
+    private List<User> users;
 }

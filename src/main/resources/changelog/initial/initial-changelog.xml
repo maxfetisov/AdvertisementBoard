@@ -7,6 +7,8 @@
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
 
     <include file="create-user-table-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="create-role-table-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="create-user-role-table-changelog.xml" relativeToChangelogFile="true"/>
     <include file="create-category-table-changelog.xml" relativeToChangelogFile="true"/>
     <include file="create-advertisement-table-changelog.xml" relativeToChangelogFile="true"/>
 
