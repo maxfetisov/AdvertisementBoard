@@ -1,3 +1,34 @@
 body{
   background: rgb(225, 23, 176);
 }
+footer{
+  display: block;
+}
+main{
+  display: block;
+}
+main > .container{
+  padding: 60px 15px 0;
+}
+header{
+  display: block;
+}
+h2{
+  text-align: center;
+}
+.blocksOfAdvertisements {
+  padding-top: 2%;
+}
+.p-5{
+  padding: 1rem!important;
+}
+.cardAdvert{
+  max-width: 540px;
+}
+.row{
+  margin-left: 0!important;
+}
+.headerSearch{
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}

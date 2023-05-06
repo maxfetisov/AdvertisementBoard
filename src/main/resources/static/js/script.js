@@ -1,3 +1,3 @@
 onload = function() {
-    alert("f");
+
 }

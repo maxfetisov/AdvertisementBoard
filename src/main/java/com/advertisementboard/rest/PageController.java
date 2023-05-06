@@ -13,4 +13,14 @@ public class PageController {
         return "index";
     }
 
+    @GetMapping("advertisements")
+    public String getAdvertisementsPage(){
+        return "advertisements";
+    }
+
+    @GetMapping("home")
+    public String getHomePage(){
+        return "home";
+    }
+
 }
