@@ -6,7 +6,7 @@ import com.advertisementboard.data.enumeration.UserRole;
 import com.advertisementboard.repository.UserRepository;
 import com.advertisementboard.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,11 +15,11 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    private final PasswordEncoder passwordEncoder;
+    //private final PasswordEncoder passwordEncoder;
 
     @Override
     public void createUser(final User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        //user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.getRoles().add(Role.builder().name(UserRole.USER).build());
         userRepository.save(user);
     }

@@ -6,6 +6,9 @@ spring:
     driver-class-name: org.postgresql.Driver
   liquibase:
     change-log: changelog/main-changelog.xml
+  thymeleaf:
+    prefix: classpath:/static/
+    suffix: .html
 advertisement-board:
   authorization:
     secret: "123"
