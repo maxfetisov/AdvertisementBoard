@@ -6,7 +6,6 @@ import com.advertisementboard.data.enumeration.UserRole;
 import com.advertisementboard.repository.UserRepository;
 import com.advertisementboard.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

@@ -6,4 +6,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   liquibase:
     change-log: changelog/main-changelog.xml
-
+advertisement-board:
+  authorization:
+    secret: "123"
+    expiration: 86400000
