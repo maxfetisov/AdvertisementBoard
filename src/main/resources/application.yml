@@ -13,3 +13,7 @@ advertisement-board:
   authorization:
     secret: "123"
     expiration: 86400000
+  contacts: '{
+    phone: "our phone number",
+    email: "our email"
+  }'
