@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/advertisement-board
     username: postgres
-    password: 1234
+    password: 123
     driver-class-name: org.postgresql.Driver
   liquibase:
     change-log: changelog/main-changelog.xml
@@ -13,3 +13,7 @@ advertisement-board:
   authorization:
     secret: "123"
     expiration: 86400000
+  contacts: '{
+    phone: "our phone number",
+    email: "our email"
+  }'

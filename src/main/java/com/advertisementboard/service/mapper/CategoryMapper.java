@@ -9,6 +9,6 @@ public interface CategoryMapper {
 
     Category categoryDtoToCategory(CategoryDto categoryDto);
 
-    CategoryDto categoryToCategoryDto(Category categoryDto);
+    CategoryDto categoryToCategoryDto(Category category);
 
 }
