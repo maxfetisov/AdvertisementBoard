@@ -1,6 +1,22 @@
 onload = function () {
     initCategories();
+    initContacts();
     initCategoriesAdvertisements();
+}
+
+function initContacts(){
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "/api/contacts",
+        dataType: 'json',
+        success: function (data) {
+                $("#contacts").append("<li>" + data.phone + "</li>").append("<li>" + data.email + "</li>");
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
 }
 
 function initCategories(){
