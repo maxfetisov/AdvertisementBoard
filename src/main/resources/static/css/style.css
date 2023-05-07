@@ -32,3 +32,36 @@ h2{
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
+li{
+  list-style-type: none;
+  text-align: left;
+}
+#scrollBlock{
+  overflow-y: scroll;
+  max-height: 22vh;
+  width: 100%;
+}
+
+#scrollBlock::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 10px;
+  background-color: #F5F5F5;
+}
+
+#scrollBlock::-webkit-scrollbar
+{
+  width: 12px;
+  background-color: #F5F5F5;
+}
+
+#scrollBlock::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: #555;
+}
+
+#invalid-feedback{
+  color: darkred;
+}
