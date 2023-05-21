@@ -191,5 +191,8 @@ function registration(){
             }
         }
     }
+}
 
+function createAdvertisement(){
+    window.open("createAdvertisement", "Создание объявления");
 }

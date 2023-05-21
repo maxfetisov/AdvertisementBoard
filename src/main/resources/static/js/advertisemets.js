@@ -1,6 +1,21 @@
 onload = function () {
     initCategories();
-    initAdvertisements();
+    initContacts();
+}
+
+function initContacts(){
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "/api/contacts",
+        dataType: 'json',
+        success: function (data) {
+                $("#contacts").append("<li>" + data.phone + "</li>").append("<li>" + data.email + "</li>");
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
 }
 
 function initCategories(){
@@ -13,21 +28,6 @@ function initCategories(){
             data.forEach((category) => {
                 $("#vertical").append("<li>" + category.name + "</li>");
             })
-        },
-        error: function (e) {
-            console.log(e);
-        }
-    });
-}
-
-function initAdvertisements(){
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: "/api/categories",
-        dataType: 'json',
-        success: function (data) {
-            console.log(data);
         },
         error: function (e) {
             console.log(e);

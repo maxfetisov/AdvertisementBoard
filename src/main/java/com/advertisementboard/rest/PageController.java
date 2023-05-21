@@ -23,4 +23,7 @@ public class PageController {
         return "home";
     }
 
+    @GetMapping("createAdvertisement")
+    public String getCreateAdvertisementPage() {return "createAdvertisement";}
+
 }
