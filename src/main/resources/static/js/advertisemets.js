@@ -3,6 +3,22 @@ onload = function () {
     initContacts();
 }
 
+function initAdvertisements(){
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/api/advertisements/filter",
+        dataType: 'json',
+        data: {},
+        success: function (data) {
+            $("#contacts").append("<li>" + data.phone + "</li>").append("<li>" + data.email + "</li>");
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
+}
+
 function initContacts(){
     $.ajax({
         type: "GET",
@@ -120,5 +136,8 @@ function registration(){
             }
         }
     }
+}
 
+function showAdvert(){
+    $('#staticBackdrop').modal('show');
 }
