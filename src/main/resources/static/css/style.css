@@ -67,7 +67,7 @@ li{
 
 #fileDropBox {
   margin-bottom:1em;
-  width: 20em;
+  width: 100%;
   line-height: 10em;
   border: 1px dashed gray;
   text-align: center;
@@ -85,4 +85,8 @@ li{
 
 .form{
   max-height: 72vh;
+}
+
+.link-img{
+  width: 10%!important;
 }
