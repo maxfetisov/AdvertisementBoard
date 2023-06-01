@@ -84,7 +84,7 @@ function create(){
     }
     else{
         if($("#description").hasClass("is-invalid")) {
-            $("#title").removeClass("is-invalid");
+            $("#description").removeClass("is-invalid");
             $("#validDescription").empty();
         }
     }
@@ -114,9 +114,13 @@ function create(){
 }
 
 function cancel(){
+    //TODO возможно стоит сделать переадресацию на предыдущую страницу, т.к. при открытии только этой страницы закрытие вкладки не работает
+
     window.close();
 }
 
 function remove(){
     //TODO удаление объявления, нужен эндпоинт
+
+    //TODO всплывающее окно предупреждения
 }

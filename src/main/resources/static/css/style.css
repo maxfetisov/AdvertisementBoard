@@ -37,7 +37,6 @@ li{
   text-align: left;
 }
 #scrollBlock{
-  overflow-y: scroll;
   max-height: 22vh;
   width: 100%;
 }
@@ -82,4 +81,8 @@ li{
 
 .left{
   padding-left: 0 !important;
+}
+
+.form{
+  max-height: 72vh;
 }

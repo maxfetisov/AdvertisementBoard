@@ -140,4 +140,6 @@ function registration(){
 
 function showAdvert(){
     $('#staticBackdrop').modal('show');
+
+    //TODO получение данных об объявлении
 }
