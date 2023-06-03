@@ -1,6 +1,8 @@
 package com.advertisementboard.service.impl;
 
 import com.advertisementboard.data.dto.category.CategoryDto;
+import com.advertisementboard.exception.entity.EntityAlreadyExistException;
+import com.advertisementboard.exception.entity.EntityNotExistException;
 import com.advertisementboard.repository.CategoryRepository;
 import com.advertisementboard.service.CategoryService;
 import com.advertisementboard.service.mapper.CategoryMapper;
@@ -18,20 +20,26 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryMapper categoryMapper;
 
     @Override
-    public Long createCategory(CategoryDto category) {
+    public Long createCategory(final CategoryDto category) {
+        if (category.getId() != null && categoryRepository.existsById(category.getId()))
+            throw new EntityAlreadyExistException(category.toString());
         return categoryRepository.save(categoryMapper.categoryDtoToCategory(category)).getId();
     }
 
     @Override
-    public void deleteCategory(Long id) {
+    public void deleteCategory(final Long id) {
+        if (!categoryRepository.existsById(id))
+            throw new EntityNotExistException(id);
         categoryRepository.deleteById(id);
     }
 
     @Override
-    public void updateCategory(CategoryDto category) {
+    public void updateCategory(final CategoryDto category) {
         categoryRepository.findById(category.getId()).ifPresentOrElse(oldCategory ->
                         categoryRepository.save(categoryMapper.categoryDtoToCategory(category)),
-                () -> {throw new RuntimeException();});//TODO свое исключение
+                () -> {
+                    throw new EntityNotExistException(category.getId());
+                });
     }
 
     @Override
@@ -40,8 +48,9 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDto getCategory(Long id) {
-        return categoryMapper.categoryToCategoryDto(categoryRepository.findById(id).orElseThrow(RuntimeException::new));//TODO свое исключение
+    public CategoryDto getCategory(final Long id) {
+        return categoryMapper.categoryToCategoryDto(categoryRepository.findById(id)
+                .orElseThrow(() -> new EntityNotExistException(id)));
     }
 
 }

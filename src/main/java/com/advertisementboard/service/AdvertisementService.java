@@ -14,5 +14,10 @@ public interface AdvertisementService {
 
     AdvertisementPageResponseDto getAdvertisements(AdvertisementPageRequestDto request);
 
+    Long createAdvertisement(AdvertisementDto advertisement);
+
+    void updateAdvertisement(AdvertisementDto advertisement);
+
+    void deleteAdvertisement(Long id);
 
 }

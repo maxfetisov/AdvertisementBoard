@@ -4,11 +4,11 @@ import com.advertisementboard.data.dto.advertisement.AdvertisementDto;
 import com.advertisementboard.data.dto.advertisement.AdvertisementPageRequestDto;
 import com.advertisementboard.data.dto.advertisement.AdvertisementPageResponseDto;
 import com.advertisementboard.data.entity.Advertisement;
+import com.advertisementboard.exception.entity.EntityNotExistException;
 import com.advertisementboard.repository.AdvertisementRepository;
 import com.advertisementboard.service.AdvertisementService;
 import com.advertisementboard.service.mapper.AdvertisementMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,9 +26,9 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     private final AdvertisementMapper advertisementMapper;
 
     @Override
-    public AdvertisementDto getAdvertisement(Long id) {
+    public AdvertisementDto getAdvertisement(final Long id) {
         return advertisementMapper.advertisementToAdvertisementDto(advertisementRepository.findById(id)
-                .orElseThrow(RuntimeException::new));//TODO свое исплючение
+                .orElseThrow(() -> new EntityNotExistException(id)));
     }
 
     @Override
@@ -39,7 +39,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     }
 
     @Override
-    public AdvertisementPageResponseDto getAdvertisements(AdvertisementPageRequestDto request) {
+    public AdvertisementPageResponseDto getAdvertisements(final AdvertisementPageRequestDto request) {
         Page<Advertisement> advertisements;
         Pageable pageable;
         if (request.getSortField() == null || request.getSortField().isEmpty()) {
@@ -51,15 +51,16 @@ public class AdvertisementServiceImpl implements AdvertisementService {
                     Sort.by(request.getSortField()
                     ));
         }
-        if(request.getCategoryFilter() != null && request.getUserFilter() != null && !request.getUserFilter().isEmpty()){
-            advertisements = advertisementRepository.findAllByUserLoginAndAndCategoryId(request.getUserFilter(), request.getCategoryFilter(), pageable);
+        if (request.getCategoryFilter() != null
+                && request.getUserFilter() != null
+                && !request.getUserFilter().isEmpty()) {
+            advertisements = advertisementRepository
+                    .findAllByUserLoginAndCategoryId(request.getUserFilter(), request.getCategoryFilter(), pageable);
         } else if (request.getCategoryFilter() != null) {
             advertisements = advertisementRepository.findAllByCategoryId(request.getCategoryFilter(), pageable);
-        }
-        else if(request.getUserFilter() != null && !request.getUserFilter().isEmpty()){
+        } else if (request.getUserFilter() != null && !request.getUserFilter().isEmpty()) {
             advertisements = advertisementRepository.findAllByUserLogin(request.getUserFilter(), pageable);
-        }
-        else{
+        } else {
             advertisements = advertisementRepository.findAll(pageable);
         }
         return AdvertisementPageResponseDto.builder()
@@ -71,6 +72,29 @@ public class AdvertisementServiceImpl implements AdvertisementService {
                         .map(advertisementMapper::advertisementToAdvertisementDto)
                         .toList())
                 .build();
+    }
+
+    @Override
+    public Long createAdvertisement(final AdvertisementDto advertisement) {
+        return advertisementRepository.save(advertisementMapper.advertisementDtoToAdvertisement(advertisement)).getId();
+    }
+
+    @Override
+    public void updateAdvertisement(final AdvertisementDto advertisement) {
+        advertisementRepository.findById(advertisement.getId()).ifPresentOrElse(oldCategory ->
+                        advertisementRepository.save(
+                                advertisementMapper.advertisementDtoToAdvertisement(advertisement)
+                        ),
+                () -> {
+                    throw new EntityNotExistException(advertisement.getId());
+                });
+    }
+
+    @Override
+    public void deleteAdvertisement(final Long id) {
+        if(!advertisementRepository.existsById(id))
+            throw new EntityNotExistException(id);
+        advertisementRepository.deleteById(id);
     }
 
 }
