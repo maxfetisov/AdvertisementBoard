@@ -117,12 +117,18 @@ function openAdvertisement(cat){
         type: "GET",
         contentType: "application/json",
         url: "/api/categories",
-        dataType: 'json',
+        dataType: "json",
         success: function (data) {
             data.forEach((category) => {
                 if(category.name === nameCategory){
                     console.log(category.name + " " + category.id);
                     //TODO открывать страницу с выбранной категорией
+
+                    localStorage.setItem('category', category.id);
+                    //console.log(localStorage.getItem('category'));
+
+                    location.assign("/advertisements");
+
                 }
             })
         },

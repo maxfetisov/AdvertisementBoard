@@ -1,17 +1,60 @@
 onload = function () {
     initCategories();
     initContacts();
+    initTitle();
+    initAdvertisements();
+
+    //TODO управление пагинацией
+}
+
+function initTitle(){
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "/api/categories",
+        dataType: "json",
+        success: function (data) {
+            data.forEach((category) => {
+                if(category.id == localStorage.getItem('category')){
+                    $('#categoryListAdverts').append('<h3>' + category.name + '</h3>');
+                }
+            })
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
 }
 
 function initAdvertisements(){
     $.ajax({
-        type: "POST",
+        type: "GET",
         contentType: "application/json",
-        url: "/api/advertisements/filter",
+        url: "/api/advertisements",
         dataType: 'json',
-        data: {},
         success: function (data) {
-            $("#contacts").append("<li>" + data.phone + "</li>").append("<li>" + data.email + "</li>");
+            let html = "";
+            data.forEach((advert) => {
+                if(advert.category.id == localStorage.getItem('category')) {
+                    html += "<div class=\"row advert\">" +
+                        "<div class=\"card mb-3 cardAdvert\" onclick=\"showAdvert()\">" +
+                        "<div class=\"row g-0\">" +
+                        "<div class=\"col-md-4\">" +
+                        "<img src=\"...\" class=\"img-fluid rounded-start\" alt=\"...\">" +
+                        "</div>" +
+                        "<div class=\"col-md-8\">" +
+                        "<div class=\"card-body\">" +
+                        "<h5 class=\"card-title\">" + advert.heading + "</h5>" +
+                        "<p class=\"card-text\">" + advert.text + "</p>" +
+                        "<p class=\"card-text\"><small class=\"text-body-secondary\">" + advert.user.name + "</small></p>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>";
+                }
+            });
+            $("#listAdverts").prepend(html);
         },
         error: function (e) {
             console.log(e);
