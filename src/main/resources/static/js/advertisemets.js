@@ -1,10 +1,13 @@
+var currentPage = 0;
+let pageCount = 0;
+let pageSize = 3;
+
 onload = function () {
     initCategories();
     initContacts();
     initTitle();
-    initAdvertisements();
-
-    //TODO управление пагинацией
+    initPage();
+    initAdvertisements(currentPage,pageSize);
 }
 
 function initTitle(){
@@ -26,40 +29,94 @@ function initTitle(){
     });
 }
 
-function initAdvertisements(){
+function initAdvertisements(curPage, pageSize){
+    $("#listAdverts").empty();
+
+    let request = {
+        page: curPage,
+        pageSize: pageSize,
+        categoryFilter: localStorage.getItem('category')
+    };
+
     $.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json",
-        url: "/api/advertisements",
+        url: "/api/advertisements/filter",
+        data: JSON.stringify(request),
         dataType: 'json',
         success: function (data) {
             let html = "";
-            data.forEach((advert) => {
-                if(advert.category.id == localStorage.getItem('category')) {
-                    html += "<div class=\"row advert\">" +
-                        "<div class=\"card mb-3 cardAdvert\" onclick=\"showAdvert()\">" +
-                        "<div class=\"row g-0\">" +
-                        "<div class=\"col-md-4\">" +
-                        "<img src=\"...\" class=\"img-fluid rounded-start\" alt=\"...\">" +
-                        "</div>" +
-                        "<div class=\"col-md-8\">" +
-                        "<div class=\"card-body\">" +
-                        "<h5 class=\"card-title\">" + advert.heading + "</h5>" +
-                        "<p class=\"card-text\">" + advert.text + "</p>" +
-                        "<p class=\"card-text\"><small class=\"text-body-secondary\">" + advert.user.name + "</small></p>" +
-                        "</div>" +
-                        "</div>" +
-                        "</div>" +
-                        "</div>" +
-                        "</div>";
-                }
+            data.advertisements.forEach((advert) => {
+                html += "<div class=\"row advert\">" +
+                    "<div class=\"card mb-3 cardAdvert\" onclick=\"showAdvert(this)\">" +
+                    "<div class=\"row g-0\">" +
+                    "<div class=\"col-md-4\">" +
+                    "<img src=\"...\" class=\"img-fluid rounded-start\" alt=\"...\">" +
+                    "</div>" +
+                    "<div class=\"col-md-8\">" +
+                    "<div class=\"card-body\">" +
+                    "<h5 class=\"card-title\">" + advert.heading + "</h5>" +
+                    "<p class=\"card-text\">" + advert.text + "</p>" +
+                    "<p id=\"idAdvert\" class=\"card-text\" style=\"visibility: hidden\">" + advert.id + "</p>" +
+                    "<p class=\"card-text\"><small class=\"text-body-secondary\">" + advert.user.name + "</small></p>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>";
             });
             $("#listAdverts").prepend(html);
+
+
         },
         error: function (e) {
             console.log(e);
         }
     });
+}
+
+function initPage(){
+    let request = {
+        page: currentPage,
+        pageSize: pageSize,
+        categoryFilter: localStorage.getItem('category')
+    };
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/api/advertisements/filter",
+        data: JSON.stringify(request),
+        dataType: 'json',
+        success: function (data) {
+            pageCount = data.pageCount;
+            let html = "<li class=\"page-item\">" +
+                "<a class=\"page-link\" href=\"#\" aria-label=\"Previous\">" +
+                "<span aria-hidden=\"true\">&laquo;</span>" +
+                "</a>" +
+                "</li>";
+            for(let i = 0; i < pageSize; i++){
+                html += "<li class=\"page-item\" id=\"page_" + i + "\" onclick=\"pageChange(" + i + "\"><a class=\"page-link\" href=\"#\">" + (i+1) + "</a></li>";
+            }
+            html += "<li class=\"page-item\">" +
+                "<a class=\"page-link\" href=\"#\" aria-label=\"Next\">" +
+                "<span aria-hidden=\"true\">&raquo;</span>" +
+                "</a>" +
+                "</li>";
+            $("#paginator").append(html);
+            $("#page_" + currentPage).addClass("active");
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
+}
+
+function pageChange(page){
+    $("#page_" + currentPage).removeClass("active");
+    $("#page_" + page).addClass("active");
+    currentPage = page;
+    initAdvertisements(currentPage);
 }
 
 function initContacts(){
@@ -181,8 +238,44 @@ function registration(){
     }
 }
 
-function showAdvert(){
-    $('#staticBackdrop').modal('show');
+function showAdvert(advertisement){
+    let advertId = $(advertisement).find("#idAdvert")[0].innerHTML;
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "/api/advertisements/" + advertId,
+        dataType: 'json',
+        success: function (data) {
+            // добавление изображений
+            $("#carouselImages").empty();
+            let images = "<div class=\"carousel-item active\">" +
+                "<img src='image/2768339668.jpg' class=\"d-block w-100\" alt=\"Первое изображение\">" +
+                "</div>" +
+                "<div class=\"carousel-item\">" +
+                "<img src=\"image/2790875887.jpg\" class=\"d-block w-100\" alt=\"Второе изображение\">" +
+                "</div>" +
+                "<div class=\"carousel-item\">" +
+                "<img src=\"image/artleo.jpg\" class=\"d-block w-100\" alt=\"Третье изображение\">" +
+                "</div>";
+            $("#carouselImages").append(images);
 
-    //TODO получение данных об объявлении
+            // добавление заголовка
+            $("#advertModalHeader").empty();
+            let title = "<h5 class=\"modal-title\" id=\"staticBackdropLabel\">" + data.heading + "</h5>" +
+                "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Закрыть\"></button>";
+            $("#advertModalHeader").prepend(title);
+
+            // добавление текста
+            $("#advertModalText").empty();
+            let text = "<p class=\"card-text\">" + data.text + "</p>" +
+                "<p class=\"card-text\"><small class=\"text-body-secondary\">" + data.user.name + "</small></p>";
+            $("#advertModalText").append(text);
+
+            // показать окно
+            $('#staticBackdrop').modal('show');
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
 }

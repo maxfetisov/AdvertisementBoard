@@ -139,14 +139,14 @@
                  tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel">Название объявления</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                        <div id="advertModalHeader" class="modal-header">
+                            <!--<h5 class="modal-title" id="staticBackdropLabel">Название объявления</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>-->
                         </div>
                         <div class="modal-body">
                             <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-                                <div class="carousel-inner">
-                                    <div class="carousel-item active">
+                                <div id="carouselImages" class="carousel-inner">
+                                    <!--<div class="carousel-item active">
                                         <img th:src="@{image/2768339668.jpg}" class="d-block w-100" alt="Первое изображение">
                                     </div>
                                     <div class="carousel-item">
@@ -154,7 +154,7 @@
                                     </div>
                                     <div class="carousel-item">
                                         <img th:src="@{image/artleo.jpg}" class="d-block w-100" alt="Третье изображение">
-                                    </div>
+                                    </div>-->
                                 </div>
                                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"  data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -165,18 +165,19 @@
                                     <span class="visually-hidden">Следующий</span>
                                 </button>
                             </div>
-                            <div>
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                            <div id="advertModalText">
+                                <!--<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>-->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- Пагинация на странице -->
             <div class="row pag">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item">
+                <ul id="paginator" class="pagination justify-content-center">
+                    <!--<li class="page-item">
                         <a class="page-link" href="#" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
@@ -188,9 +189,10 @@
                         <a class="page-link" href="#" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
-                    </li>
+                    </li>-->
                 </ul>
             </div>
+
         </div>
     </div>
 </main>
