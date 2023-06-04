@@ -1,9 +1,11 @@
 package com.advertisementboard.service;
 
-import com.advertisementboard.data.entity.User;
+import com.advertisementboard.data.dto.user.UserDto;
 
 public interface UserService {
 
-    void createUser(User user);
+    void createUser(UserDto user);
+
+    UserDto getUser(String login);
 
 }

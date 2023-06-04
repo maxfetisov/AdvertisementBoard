@@ -8,4 +8,12 @@ public class EntityNotExistException extends EntityException {
         super(String.format(DEFAULT_MESSAGE, "id=" + id));
     }
 
+    public EntityNotExistException(String login) {
+        super(String.format(DEFAULT_MESSAGE, "login=" + login));
+    }
+
+    public EntityNotExistException(String field, String value) {
+        super(String.format(DEFAULT_MESSAGE, field + "=" + value));
+    }
+
 }

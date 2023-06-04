@@ -8,11 +8,11 @@
 
     <changeSet id="initial-4" author="user">
         <createTable tableName="role">
-            <column name="id" type="INT">
+            <column name="id" type="SERIAL">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_role"/>
             </column>
             <column name="name" type="VARCHAR(255)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
     </changeSet>

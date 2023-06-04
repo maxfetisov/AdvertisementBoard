@@ -8,7 +8,7 @@
 
     <changeSet id="initial-2" author="user">
         <createTable tableName="category">
-            <column name="id" type="BIGINT">
+            <column name="id" type="BIGSERIAL">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_category"/>
             </column>
             <column name="name" type="VARCHAR(255)">

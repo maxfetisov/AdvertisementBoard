@@ -1,8 +1,11 @@
 package com.advertisementboard.data.dto.user;
 
+import com.advertisementboard.data.entity.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -14,5 +17,7 @@ public class UserDto {
 
     @JsonIgnore
     private String password;
+
+    private Role role;
 
 }

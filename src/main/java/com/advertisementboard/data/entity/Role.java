@@ -1,11 +1,11 @@
 package com.advertisementboard.data.entity;
 
-import com.advertisementboard.data.enumeration.UserRole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,12 +25,12 @@ import java.util.List;
 public class Role {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false, unique = true)
-    private UserRole name;
+    private String name;
 
-    @ManyToMany
+    @OneToMany(mappedBy = "role")
     private List<User> users;
 }
