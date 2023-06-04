@@ -1,6 +1,6 @@
 var currentPage = 0;
 let pageCount = 0;
-let pageSize = 3;
+let pageSize = 2;
 
 onload = function () {
     initCategories();
@@ -30,7 +30,7 @@ function initTitle(){
 }
 
 function initAdvertisements(curPage, pageSize){
-    $("#listAdverts").empty();
+    $("#listAdverts").children(".row .advert").remove();
 
     let request = {
         page: curPage,
@@ -46,12 +46,17 @@ function initAdvertisements(curPage, pageSize){
         dataType: 'json',
         success: function (data) {
             let html = "";
+            if(data.pageCount === 0){
+                html = "<h3>Список пуст!</h3>";
+                $("#listAdverts").prepend(html);
+                return;
+            }
             data.advertisements.forEach((advert) => {
                 html += "<div class=\"row advert\">" +
                     "<div class=\"card mb-3 cardAdvert\" onclick=\"showAdvert(this)\">" +
                     "<div class=\"row g-0\">" +
                     "<div class=\"col-md-4\">" +
-                    "<img src=\"...\" class=\"img-fluid rounded-start\" alt=\"...\">" +
+                    "<img src=\"image/2768339668.jpg\" class=\"img-fluid rounded-start\" alt=\"...\">" +
                     "</div>" +
                     "<div class=\"col-md-8\">" +
                     "<div class=\"card-body\">" +
@@ -66,8 +71,6 @@ function initAdvertisements(curPage, pageSize){
                     "</div>";
             });
             $("#listAdverts").prepend(html);
-
-
         },
         error: function (e) {
             console.log(e);
@@ -89,22 +92,29 @@ function initPage(){
         data: JSON.stringify(request),
         dataType: 'json',
         success: function (data) {
+            if(data.pageCount === 0){
+                return;
+            }
             pageCount = data.pageCount;
-            let html = "<li class=\"page-item\">" +
+            let html = "<li class=\"page-item\" id=\"page_prev\" onclick=\"pagePrev(this)\">" +
                 "<a class=\"page-link\" href=\"#\" aria-label=\"Previous\">" +
                 "<span aria-hidden=\"true\">&laquo;</span>" +
                 "</a>" +
                 "</li>";
-            for(let i = 0; i < pageSize; i++){
-                html += "<li class=\"page-item\" id=\"page_" + i + "\" onclick=\"pageChange(" + i + "\"><a class=\"page-link\" href=\"#\">" + (i+1) + "</a></li>";
+            for(let i = 0; i < pageCount && i < pageSize; i++){
+                html += "<li class=\"page-item\" id=\"page_" + i + "\" onclick=\"pageChange(" + i + ")\"><a class=\"page-link\" href=\"#\">" + (i+1) + "</a></li>";
             }
-            html += "<li class=\"page-item\">" +
+            html += "<li class=\"page-item\" id=\"page_next\" onclick=\"pageNext(this)\">" +
                 "<a class=\"page-link\" href=\"#\" aria-label=\"Next\">" +
                 "<span aria-hidden=\"true\">&raquo;</span>" +
                 "</a>" +
                 "</li>";
             $("#paginator").append(html);
             $("#page_" + currentPage).addClass("active");
+            $("#page_prev").addClass("disabled");
+            if(currentPage == pageCount-1){
+                $("#page_next").addClass("disabled");
+            }
         },
         error: function (e) {
             console.log(e);
@@ -112,11 +122,55 @@ function initPage(){
     });
 }
 
+function pagePrev(elem){
+    if($(elem).hasClass("disabled")){
+        return;
+    }
+    $("#page_" + currentPage).removeClass("active");
+    currentPage -= 1;
+    $("#page_" + currentPage).addClass("active");
+    if(currentPage == 0){
+        $("#page_prev").addClass("disabled");
+    }
+    if(currentPage < pageCount){
+        $("#page_next").removeClass("disabled");
+    }
+    initAdvertisements(currentPage, pageSize);
+}
+
+function pageNext(elem){
+    if($(elem).hasClass("disabled")){
+        return;
+    }
+    $("#page_" + currentPage).removeClass("active");
+    currentPage += 1;
+    $("#page_" + currentPage).addClass("active");
+    if(currentPage > 0){
+        $("#page_prev").removeClass("disabled");
+    }
+    if(currentPage == pageCount-1){
+        $("#page_next").addClass("disabled");
+    }
+    initAdvertisements(currentPage, pageSize);
+}
+
 function pageChange(page){
     $("#page_" + currentPage).removeClass("active");
     $("#page_" + page).addClass("active");
     currentPage = page;
-    initAdvertisements(currentPage);
+    if(currentPage == pageCount-1){
+        $("#page_next").addClass("disabled");
+    }
+    else if($("#page_next").hasClass("disabled")){
+        $("#page_next").removeClass("disabled");
+    }
+    if(currentPage == 0){
+        $("#page_prev").addClass("disabled");
+    }
+    else if($("#page_prev").hasClass("disabled")){
+        $("#page_prev").removeClass("disabled");
+    }
+    initAdvertisements(currentPage, pageSize);
 }
 
 function initContacts(){
@@ -142,13 +196,18 @@ function initCategories(){
         dataType: 'json',
         success: function (data) {
             data.forEach((category) => {
-                $("#vertical").append("<li>" + category.name + "</li>");
+                $("#vertical").append("<li id='" + category.id + "' onclick='categoryOpenPage(this)'>" + category.name + "</li>");
             })
         },
         error: function (e) {
             console.log(e);
         }
     });
+}
+
+function categoryOpenPage(elem){
+    localStorage.setItem('category', $(elem).attr('id'));
+    location.assign("/advertisements");
 }
 
 function authorization(){
@@ -184,6 +243,7 @@ function authorization(){
 
 function registration(){
     let email = $("#exampleInputEmail1").val().trim();
+    let name = $("#exampleInputName").val().trim();
     let pass1 = $("#exampleInputPassword1").val().trim();
     let pass2 = $("#exampleInputPassword2").val().trim();
 
@@ -197,6 +257,18 @@ function registration(){
         if($("#exampleInputEmail1").hasClass("is-invalid")) {
             $("#exampleInputEmail1").removeClass("is-invalid");
             $("#regValEmail").empty();
+        }
+    }
+    if(!name){
+        if(!$("#exampleInputName").hasClass("is-invalid")) {
+            $("#exampleInputName").addClass("is-invalid");
+            $("#regValName").append("<p>Необходимо заполнить поле</p>");
+        }
+    }
+    else{
+        if($("#exampleInputName").hasClass("is-invalid")) {
+            $("#exampleInputName").removeClass("is-invalid");
+            $("#regValName").empty();
         }
     }
     if(!pass1){
