@@ -27,13 +27,18 @@ function initCategories(){
         dataType: 'json',
         success: function (data) {
             data.forEach((category) => {
-                $("#vertical").append("<li>" + category.name + "</li>");
+                $("#vertical").append("<li id='" + category.id + "' onclick='categoryOpenPage(this)'>" + category.name + "</li>");
             })
         },
         error: function (e) {
             console.log(e);
         }
     });
+}
+
+function categoryOpenPage(elem){
+    localStorage.setItem('category', $(elem).attr('id'));
+    location.assign("/advertisements");
 }
 
 function initChapter(){
@@ -111,6 +116,31 @@ function create(){
     //TODO проверка добавленных файлов на размер
 
     //TODO создание объявления, нужен эндпоинт
+/*
+    let request = {
+        heading: title,
+        text: description,
+        user:{
+            name: yourContacts
+        },
+        category: {
+            name: $('#chapter').val()
+        }
+    };
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/api/advertisements",
+        data: JSON.stringify(request),
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });*/
 }
 
 function cancel(){

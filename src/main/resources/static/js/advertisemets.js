@@ -46,6 +46,11 @@ function initAdvertisements(curPage, pageSize){
         dataType: 'json',
         success: function (data) {
             let html = "";
+            if(data.pageCount === 0){
+                html = "<h3>Список пуст!</h3>";
+                $("#listAdverts").prepend(html);
+                return;
+            }
             data.advertisements.forEach((advert) => {
                 html += "<div class=\"row advert\">" +
                     "<div class=\"card mb-3 cardAdvert\" onclick=\"showAdvert(this)\">" +
@@ -87,6 +92,9 @@ function initPage(){
         data: JSON.stringify(request),
         dataType: 'json',
         success: function (data) {
+            if(data.pageCount === 0){
+                return;
+            }
             pageCount = data.pageCount;
             let html = "<li class=\"page-item\" id=\"page_prev\" onclick=\"pagePrev(this)\">" +
                 "<a class=\"page-link\" href=\"#\" aria-label=\"Previous\">" +
@@ -188,13 +196,18 @@ function initCategories(){
         dataType: 'json',
         success: function (data) {
             data.forEach((category) => {
-                $("#vertical").append("<li>" + category.name + "</li>");
+                $("#vertical").append("<li id='" + category.id + "' onclick='categoryOpenPage(this)'>" + category.name + "</li>");
             })
         },
         error: function (e) {
             console.log(e);
         }
     });
+}
+
+function categoryOpenPage(elem){
+    localStorage.setItem('category', $(elem).attr('id'));
+    location.assign("/advertisements");
 }
 
 function authorization(){
@@ -230,6 +243,7 @@ function authorization(){
 
 function registration(){
     let email = $("#exampleInputEmail1").val().trim();
+    let name = $("#exampleInputName").val().trim();
     let pass1 = $("#exampleInputPassword1").val().trim();
     let pass2 = $("#exampleInputPassword2").val().trim();
 
@@ -243,6 +257,18 @@ function registration(){
         if($("#exampleInputEmail1").hasClass("is-invalid")) {
             $("#exampleInputEmail1").removeClass("is-invalid");
             $("#regValEmail").empty();
+        }
+    }
+    if(!name){
+        if(!$("#exampleInputName").hasClass("is-invalid")) {
+            $("#exampleInputName").addClass("is-invalid");
+            $("#regValName").append("<p>Необходимо заполнить поле</p>");
+        }
+    }
+    else{
+        if($("#exampleInputName").hasClass("is-invalid")) {
+            $("#exampleInputName").removeClass("is-invalid");
+            $("#regValName").empty();
         }
     }
     if(!pass1){
