@@ -1,13 +1,12 @@
 package com.advertisementboard.service.initialization.impl;
 
+import com.advertisementboard.data.dto.authentication.RegistrationRequestDto;
 import com.advertisementboard.data.dto.role.RoleDto;
-import com.advertisementboard.data.dto.user.UserDto;
 import com.advertisementboard.data.enumeration.UserRole;
 import com.advertisementboard.exception.entity.EntityAlreadyExistException;
+import com.advertisementboard.service.account.AccountService;
 import com.advertisementboard.service.initialization.InitializationService;
 import com.advertisementboard.service.user.RoleService;
-import com.advertisementboard.service.user.UserService;
-import com.advertisementboard.service.mapper.RoleMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,11 +18,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InitializationServiceImpl implements InitializationService {
 
-    private final UserService userService;
+    private final AccountService accountService;
 
     private final RoleService roleService;
 
-    private final RoleMapper roleMapper;
 
     @Override
     public void initialize() {
@@ -37,29 +35,33 @@ public class InitializationServiceImpl implements InitializationService {
     }
 
     private void initializeUsers() {
-        List.of(
-                UserDto.builder()
+        initializeUser(
+                RegistrationRequestDto.builder()
                         .login("admin")
                         .name("admin")
                         .password("admin")
-                        .role(roleMapper.roleDtoToRole(roleService.getRoleByName(UserRole.ADMINISTRATOR)))
                         .build(),
-                UserDto.builder()
+                roleService.getRoleByName(UserRole.ADMINISTRATOR)
+                );
+        initializeUser(
+                RegistrationRequestDto.builder()
                         .login("moderator")
                         .name("moderator")
                         .password("moderator")
-                        .role(roleMapper.roleDtoToRole(roleService.getRoleByName(UserRole.MODERATOR)))
                         .build(),
-                UserDto.builder()
+                roleService.getRoleByName(UserRole.MODERATOR)
+        );
+        initializeUser(
+                RegistrationRequestDto.builder()
                         .login("user")
                         .name("user")
                         .password("user")
-                        .role(roleMapper.roleDtoToRole(roleService.getRoleByName(UserRole.USER)))
-                        .build()
-        ).forEach(this::initializeUser);
+                        .build(),
+                roleService.getRoleByName(UserRole.USER)
+        );
     }
 
-    private void initializeRole(UserRole role) {
+    private void initializeRole(final UserRole role) {
         try {
             roleService.createRole(RoleDto.builder().name(role.toString()).build());
         } catch (EntityAlreadyExistException e) {
@@ -67,9 +69,9 @@ public class InitializationServiceImpl implements InitializationService {
         }
     }
 
-    private void initializeUser(UserDto user) {
+    private void initializeUser(final RegistrationRequestDto request, final RoleDto role) {
         try {
-            userService.createUser(user);
+            accountService.register(request, role);
         } catch (EntityAlreadyExistException e) {
             log.info(e.getMessage());
         }

@@ -1,6 +1,7 @@
 package com.advertisementboard.service.user;
 
 import com.advertisementboard.data.dto.role.RoleDto;
+import com.advertisementboard.data.entity.Role;
 import com.advertisementboard.data.enumeration.UserRole;
 
 public interface RoleService {

@@ -3,9 +3,12 @@ package com.advertisementboard.service.user.impl;
 import com.advertisementboard.data.dto.user.UserDto;
 import com.advertisementboard.exception.entity.EntityNotExistException;
 import com.advertisementboard.repository.UserRepository;
+import com.advertisementboard.service.security.JwtService;
 import com.advertisementboard.service.user.UserService;
 import com.advertisementboard.service.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +20,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
 
-    private final PasswordEncoder passwordEncoder;
-
     @Override
     public void createUser(final UserDto user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(userMapper.userDtoToUser(user));
     }
 
@@ -31,4 +31,9 @@ public class UserServiceImpl implements UserService {
                 -> new EntityNotExistException(login)));
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        return userRepository.findByLogin(login).orElseThrow(()
+                -> new UsernameNotFoundException(login));
+    }
 }
