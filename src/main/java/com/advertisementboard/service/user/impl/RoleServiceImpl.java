@@ -1,11 +1,11 @@
-package com.advertisementboard.service.impl;
+package com.advertisementboard.service.user.impl;
 
 import com.advertisementboard.data.dto.role.RoleDto;
 import com.advertisementboard.data.enumeration.UserRole;
 import com.advertisementboard.exception.entity.EntityAlreadyExistException;
 import com.advertisementboard.exception.entity.EntityNotExistException;
 import com.advertisementboard.repository.RoleRepository;
-import com.advertisementboard.service.RoleService;
+import com.advertisementboard.service.user.RoleService;
 import com.advertisementboard.service.mapper.RoleMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

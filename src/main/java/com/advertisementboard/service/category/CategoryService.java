@@ -1,4 +1,4 @@
-package com.advertisementboard.service;
+package com.advertisementboard.service.category;
 
 import com.advertisementboard.data.dto.category.CategoryDto;
 

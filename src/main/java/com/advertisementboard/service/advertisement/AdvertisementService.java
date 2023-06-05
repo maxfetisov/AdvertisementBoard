@@ -1,4 +1,4 @@
-package com.advertisementboard.service;
+package com.advertisementboard.service.advertisement;
 
 import com.advertisementboard.data.dto.advertisement.AdvertisementDto;
 import com.advertisementboard.data.dto.advertisement.AdvertisementPageRequestDto;

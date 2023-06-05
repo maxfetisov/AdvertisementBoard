@@ -1,4 +1,4 @@
-package com.advertisementboard.service.impl;
+package com.advertisementboard.service.advertisement.impl;
 
 import com.advertisementboard.data.dto.advertisement.AdvertisementDto;
 import com.advertisementboard.data.dto.advertisement.AdvertisementPageRequestDto;
@@ -6,7 +6,7 @@ import com.advertisementboard.data.dto.advertisement.AdvertisementPageResponseDt
 import com.advertisementboard.data.entity.Advertisement;
 import com.advertisementboard.exception.entity.EntityNotExistException;
 import com.advertisementboard.repository.AdvertisementRepository;
-import com.advertisementboard.service.AdvertisementService;
+import com.advertisementboard.service.advertisement.AdvertisementService;
 import com.advertisementboard.service.mapper.AdvertisementMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

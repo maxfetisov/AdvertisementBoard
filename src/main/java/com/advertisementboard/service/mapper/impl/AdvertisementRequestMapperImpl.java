@@ -2,8 +2,8 @@ package com.advertisementboard.service.mapper.impl;
 
 import com.advertisementboard.data.dto.advertisement.AdvertisementDto;
 import com.advertisementboard.data.dto.advertisement.AdvertisementRequestDto;
-import com.advertisementboard.service.CategoryService;
-import com.advertisementboard.service.UserService;
+import com.advertisementboard.service.category.CategoryService;
+import com.advertisementboard.service.user.UserService;
 import com.advertisementboard.service.mapper.AdvertisementRequestMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

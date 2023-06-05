@@ -1,4 +1,4 @@
-package com.advertisementboard.rest;
+package com.advertisementboard.rest.api;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;

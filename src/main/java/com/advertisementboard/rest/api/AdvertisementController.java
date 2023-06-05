@@ -1,10 +1,10 @@
-package com.advertisementboard.rest;
+package com.advertisementboard.rest.api;
 
 import com.advertisementboard.data.dto.advertisement.AdvertisementDto;
 import com.advertisementboard.data.dto.advertisement.AdvertisementPageRequestDto;
 import com.advertisementboard.data.dto.advertisement.AdvertisementPageResponseDto;
 import com.advertisementboard.data.dto.advertisement.AdvertisementRequestDto;
-import com.advertisementboard.service.AdvertisementService;
+import com.advertisementboard.service.advertisement.AdvertisementService;
 import com.advertisementboard.service.mapper.AdvertisementRequestMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

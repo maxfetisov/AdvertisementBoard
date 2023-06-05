@@ -1,10 +1,10 @@
-package com.advertisementboard.service.impl;
+package com.advertisementboard.service.category.impl;
 
 import com.advertisementboard.data.dto.category.CategoryDto;
 import com.advertisementboard.exception.entity.EntityAlreadyExistException;
 import com.advertisementboard.exception.entity.EntityNotExistException;
 import com.advertisementboard.repository.CategoryRepository;
-import com.advertisementboard.service.CategoryService;
+import com.advertisementboard.service.category.CategoryService;
 import com.advertisementboard.service.mapper.CategoryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

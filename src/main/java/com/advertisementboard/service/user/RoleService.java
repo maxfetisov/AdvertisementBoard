@@ -1,4 +1,4 @@
-package com.advertisementboard.service;
+package com.advertisementboard.service.user;
 
 import com.advertisementboard.data.dto.role.RoleDto;
 import com.advertisementboard.data.enumeration.UserRole;

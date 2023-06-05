@@ -1,6 +1,6 @@
 package com.advertisementboard.startup;
 
-import com.advertisementboard.service.InitializationService;
+import com.advertisementboard.service.initialization.InitializationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

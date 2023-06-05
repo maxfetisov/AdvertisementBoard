@@ -1,7 +1,7 @@
-package com.advertisementboard.rest;
+package com.advertisementboard.rest.api;
 
 import com.advertisementboard.data.dto.category.CategoryDto;
-import com.advertisementboard.service.CategoryService;
+import com.advertisementboard.service.category.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.advertisementboard.rest;
+package com.advertisementboard.rest.page;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
