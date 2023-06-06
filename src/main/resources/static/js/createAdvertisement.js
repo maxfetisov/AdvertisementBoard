@@ -87,6 +87,18 @@ function checkToken(){
 function drawLogin(){
     $("#navbarCollapse").children().remove();
     $("#navbarCollapse").append("<a class=\"navbar-brand\" href=\"#\">" + account + "</a>");
+    let html = "<button type=\"button\" class=\"btn btn-outline-light me-2\" onclick='exit()'>Выйти</button>";
+    $("#navbarCollapse").append(html);
+}
+
+function exit(){
+    localStorage.setItem('token', "");
+    if(localStorage.getItem('category') === null){
+        location.assign("/home");
+    }
+    else{
+        location.assign('/advertisements');
+    }
 }
 
 function initContacts(){
@@ -248,6 +260,109 @@ function create() {
 
 function cancel(){
     location.assign("/advertisements");
+}
+
+function update(){
+    // Проверка заполнения полей
+    let title = $('#title').val();
+    console.log(title);
+    let description = $('#description').val();
+    console.log(description);
+    let url = $('#url').val();
+    console.log(url);
+    let yourContacts = $('#yourContacts').val();
+    console.log(yourContacts);
+    if (!title) {
+        if (!$("#title").hasClass("is-invalid")) {
+            $("#title").addClass("is-invalid");
+            $("#validTitle").append("<p>Необходимо заполнить поле</p>");
+        }
+    } else {
+        if ($("#title").hasClass("is-invalid")) {
+            $("#title").removeClass("is-invalid");
+            $("#validTitle").empty();
+        }
+    }
+    if (!description) {
+        if (!$("#description").hasClass("is-invalid")) {
+            $("#description").addClass("is-invalid");
+            $("#validDescription").append("<p>Необходимо заполнить поле</p>");
+        }
+    } else {
+        if ($("#description").hasClass("is-invalid")) {
+            $("#description").removeClass("is-invalid");
+            $("#validDescription").empty();
+        }
+    }
+    if (!url || !yourContacts) {
+        if (!$("#url").hasClass("is-invalid")) {
+            $("#url").addClass("is-invalid");
+        }
+        if (!$("#yourContacts").hasClass("is-invalid")) {
+            $("#yourContacts").addClass("is-invalid");
+        }
+        $("#validYourContacts").append("<p>Необходимо заполнить поле \"Url\" или \"Ваши контакты\"</p>");
+
+    } else {
+        if ($("#url").hasClass("is-invalid")) {
+            $("#url").removeClass("is-invalid");
+        }
+        if ($("#yourContacts").hasClass("is-invalid")) {
+            $("#yourContacts").removeClass("is-invalid");
+        }
+        $("#validYourContacts").empty();
+    }
+
+    //TODO проверка добавленных файлов на размер
+
+    let request = {
+        id: advertId,
+        heading: title,
+        text: description,
+        categoryId: $('#chapter').val(),
+        contacts: yourContacts,
+        url: url
+    };
+
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: "/api/advertisements",
+        headers:{
+            'Authorization': localStorage.getItem('token')
+        },
+        data: JSON.stringify(request),
+        dataType: 'json',
+        statusCode: {
+            200:
+                function (data) {
+                    $("#toastBodyText").append("Объявление успешно обновлено.");
+                    const toast = new bootstrap.Toast(document.getElementById('liveToast'));
+                    toast.show();
+                    if(localStorage.getItem('category') === null){
+                        location.assign("/home");
+                    }
+                    else{
+                        location.assign('/advertisements');
+                    }
+                },
+            400:
+                function (data) {
+                    $("#toastBodyText").append("Объявление не обновлено.");
+                    const toast = new bootstrap.Toast(document.getElementById('liveToast'));
+                    toast.show();
+                    console.log(data);
+                },
+            403:
+            function (data){
+                $("#toastBodyText").innerText = "";
+                $("#toastBodyText").append("Это не ваше объявление, вы не можете его обновить.");
+                const toast = new bootstrap.Toast(document.getElementById('liveToast'));
+                toast.show();
+                console.log(data);
+            }
+        }
+    });
 }
 
 function remove(){
