@@ -17,6 +17,7 @@ public class AdvertisementRequestMapperImpl implements AdvertisementRequestMappe
     @Override
     public AdvertisementDto advertisementRequestDtoToAdvertisementDto(AdvertisementRequestDto advertisementRequestDto) {
         return AdvertisementDto.builder()
+                .id(advertisementRequestDto.getId())
                 .heading(advertisementRequestDto.getHeading())
                 .text(advertisementRequestDto.getText())
                 .category(categoryService.getCategory(advertisementRequestDto.getCategoryId()))
@@ -28,6 +29,7 @@ public class AdvertisementRequestMapperImpl implements AdvertisementRequestMappe
     @Override
     public AdvertisementRequestDto advertisementDtoToAdvertisementRequestDto(AdvertisementDto advertisementDto) {
         return AdvertisementRequestDto.builder()
+                .id(advertisementDto.getId())
                 .heading(advertisementDto.getHeading())
                 .text(advertisementDto.getText())
                 .categoryId(advertisementDto.getCategory().getId())
