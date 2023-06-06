@@ -2,7 +2,10 @@ var currentPage = 0;
 let pageCount = 0;
 let pageSize = 2;
 
+var account = "";
+
 onload = function () {
+    checkToken();
     initCategories();
     initContacts();
     initTitle();
@@ -10,11 +13,59 @@ onload = function () {
     initAdvertisements(currentPage,pageSize);
 }
 
+function checkToken(){
+    if(localStorage.getItem('token') != null){
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "/api/account",
+            dataType: 'json',
+            headers:{
+                'Authorization': localStorage.getItem('token')
+            },
+            statusCode: {
+                200:
+                    function (data) {
+                        account = data.login;
+                        drawLogin();
+                    },
+                403:
+                    function (e) {
+                        account = "";
+                        localStorage.setItem('token', "");
+                        drawButtons();
+                        console.log(e);
+                    }
+            },
+        });
+    }
+    else{
+        drawButtons();
+    }
+}
+
+function drawButtons(){
+    $("#navbarCollapse").children().remove();
+    let html = "<button type=\"button\" class=\"btn btn-outline-light me-2\" data-bs-toggle=\"modal\" " +
+        "data-bs-target=\"#authorization\">Войти</button>" +
+        "<button type=\"button\" class=\"btn btn-warning\" data-bs-toggle=\"modal\" " +
+        "data-bs-target=\"#registration\">Зарегистрироваться</button>";
+    $("#navbarCollapse").append(html);
+}
+
+function drawLogin(){
+    $("#navbarCollapse").children().remove();
+    $("#navbarCollapse").append("<a class=\"navbar-brand\" href=\"#\">" + account + "</a>");
+}
+
 function initTitle(){
     $.ajax({
         type: "GET",
         contentType: "application/json",
         url: "/api/categories",
+        headers:{
+            'Authorization': localStorage.getItem('token')
+        },
         dataType: "json",
         success: function (data) {
             data.forEach((category) => {
@@ -42,6 +93,9 @@ function initAdvertisements(curPage, pageSize){
         type: "POST",
         contentType: "application/json",
         url: "/api/advertisements/filter",
+        headers:{
+            'Authorization': localStorage.getItem('token')
+        },
         data: JSON.stringify(request),
         dataType: 'json',
         success: function (data) {
@@ -89,6 +143,9 @@ function initPage(){
         type: "POST",
         contentType: "application/json",
         url: "/api/advertisements/filter",
+        headers:{
+            'Authorization': localStorage.getItem('token')
+        },
         data: JSON.stringify(request),
         dataType: 'json',
         success: function (data) {
@@ -193,6 +250,9 @@ function initCategories(){
         type: "GET",
         contentType: "application/json",
         url: "/api/categories",
+        headers:{
+            'Authorization': localStorage.getItem('token')
+        },
         dataType: 'json',
         success: function (data) {
             data.forEach((category) => {
@@ -249,23 +309,23 @@ function authorization(){
         type: "POST",
         contentType: "application/json",
         url: "/api/account/authenticate",
+        headers:{
+            'Authorization': localStorage.getItem('token')
+        },
         dataType: "json",
         data: JSON.stringify(request),
         statusCode: {
             200:
                 function (data) {
-                        if($("#authorModalDialog").find(".error").children().length > 0) {
-                            $("#authorModalDialog").find("#error").remove();
-                        }
-                        localStorage.setItem('token', data.token);
-                        $("#authorization").modal('hide');
-                        $("#navbarCollapse").children().remove();
-                        //TODO выводить имя пользователя
-                        $("#navbarCollapse").append("<a class=\"navbar-brand\" href=\"#\">" + "Я" + "</a>");
-                    },
+                    if ($("#authorModalDialog").find(".error").children().length > 0) {
+                        $("#authorModalDialog").find("#error").remove();
+                    }
+                    localStorage.setItem('token', data.token);
+                    $("#authorization").modal('hide');
+                    checkToken();
+                },
             403:
                 function (data) {
-                    console.log($("#authorModalDialog").find(".error").children().length === 0);
                     if($("#authorModalDialog").find(".error").children().length === 0) {
                         let html = "<div id='error' class=\"alert alert-danger\" role=\"alert\">" +
                             "Возникла ошибка при авторизации!" +
@@ -356,6 +416,9 @@ function registration(){
         type: "POST",
         contentType: "application/json",
         url: "/api/account/register",
+        headers:{
+            'Authorization': localStorage.getItem('token')
+        },
         dataType: "json",
         data: JSON.stringify(request),
         statusCode: {
@@ -366,9 +429,7 @@ function registration(){
                     }
                     localStorage.setItem('token', data.token);
                     $("#registration").modal('hide');
-                    $("#navbarCollapse").children().remove();
-                    //TODO выводить имя пользователя
-                    $("#navbarCollapse").append("<a class=\"navbar-brand\" href=\"#\">" + "Я" + "</a>");
+                    checkToken();
                 },
 
             403:
@@ -425,4 +486,14 @@ function showAdvert(advertisement){
             console.log(e);
         }
     });
+}
+
+function createAdvertisement(){
+    checkToken();
+    if(account !== ""){
+        location.assign("/createAdvertisement");
+    }
+    else{
+        $("#authorization").modal('show');
+    }
 }
