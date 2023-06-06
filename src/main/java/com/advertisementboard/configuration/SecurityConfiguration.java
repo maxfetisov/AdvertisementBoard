@@ -1,15 +1,11 @@
 package com.advertisementboard.configuration;
 
-import com.advertisementboard.data.entity.Role;
 import com.advertisementboard.data.enumeration.UserRole;
-import com.advertisementboard.service.mapper.RoleMapper;
-import com.advertisementboard.service.user.RoleService;
 import com.advertisementboard.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -21,7 +17,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -31,10 +26,6 @@ public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     private final UserService userService;
-
-    private final RoleService roleService;
-
-    private final RoleMapper roleMapper;
 
     @Bean
     public PasswordEncoder passwordEncoder(){

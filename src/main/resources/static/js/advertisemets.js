@@ -10,17 +10,17 @@ onload = function () {
     initContacts();
     initTitle();
     initPage();
-    initAdvertisements(currentPage,pageSize);
+    initAdvertisements(currentPage, pageSize);
 }
 
-function checkToken(){
-    if(localStorage.getItem('token') != null){
+function checkToken() {
+    if (localStorage.getItem('token') != null) {
         $.ajax({
             type: "GET",
             contentType: "application/json",
             url: "/api/account",
             dataType: 'json',
-            headers:{
+            headers: {
                 'Authorization': localStorage.getItem('token')
             },
             statusCode: {
@@ -38,15 +38,14 @@ function checkToken(){
                     }
             },
         });
-    }
-    else{
+    } else {
         drawButtons();
         account = "";
         localStorage.setItem('token', "");
     }
 }
 
-function drawButtons(){
+function drawButtons() {
     $("#navbarCollapse").children().remove();
     let html = "<button type=\"button\" class=\"btn btn-outline-light me-2\" data-bs-toggle=\"modal\" " +
         "data-bs-target=\"#authorization\">Войти</button>" +
@@ -55,23 +54,23 @@ function drawButtons(){
     $("#navbarCollapse").append(html);
 }
 
-function drawLogin(){
+function drawLogin() {
     $("#navbarCollapse").children().remove();
     $("#navbarCollapse").append("<a class=\"navbar-brand\" href=\"#\">" + account + "</a>");
 }
 
-function initTitle(){
+function initTitle() {
     $.ajax({
         type: "GET",
         contentType: "application/json",
         url: "/api/categories",
-        headers:{
+        headers: {
             'Authorization': localStorage.getItem('token')
         },
         dataType: "json",
         success: function (data) {
             data.forEach((category) => {
-                if(category.id == localStorage.getItem('category')){
+                if (category.id == localStorage.getItem('category')) {
                     $('#categoryListAdverts').append('<h3>' + category.name + '</h3>');
                 }
             })
@@ -82,7 +81,7 @@ function initTitle(){
     });
 }
 
-function initAdvertisements(curPage, pageSize){
+function initAdvertisements(curPage, pageSize) {
     $("#listAdverts").children(".row .advert").remove();
 
     let request = {
@@ -95,27 +94,30 @@ function initAdvertisements(curPage, pageSize){
         type: "POST",
         contentType: "application/json",
         url: "/api/advertisements/filter",
-        headers:{
+        headers: {
             'Authorization': localStorage.getItem('token')
         },
         data: JSON.stringify(request),
         dataType: 'json',
         success: function (data) {
             let html = "";
-            if(data.pageCount === 0){
+            if (data.pageCount === 0) {
                 html = "<h3>Список пуст!</h3>";
                 $("#listEmpty").prepend(html);
                 return;
             }
             data.advertisements.forEach((advert) => {
                 html += "<div class=\"row advert\">" +
-                    "<div class=\"card mb-3 cardAdvert\" onclick=\"showAdvert(this)\">" +
+                    "<div class=\"card mb-3 cardAdvert " +
+                    (advert.status === 'REJECTED' ? 'rejected-advertisement' : '') +
+                    (advert.status === 'CONFIRMED' ? 'confirmed-advertisement' : '') +
+                    "\" onclick=\"showAdvert(this)\">" +
                     "<div class=\"row g-0\">" +
                     "<div class=\"col-md-4\">" +
                     "<img src=\"image/2768339668.jpg\" style='height: 12em' class=\"img-fluid rounded-start\" alt=\"...\">" +
                     "</div>" +
                     "<div class=\"col-md-8\">" +
-                    "<div class=\"card-body\">" +
+                    "<div class=\"card-body \">" +
                     "<h5 class=\"card-title\">" + advert.heading + "</h5>" +
                     "<p class=\"card-text\">" + advert.text + "</p>" +
                     "<p id=\"idAdvert\" class=\"card-text\" style=\"visibility: hidden\">" + advert.id + "</p>" +
@@ -134,7 +136,7 @@ function initAdvertisements(curPage, pageSize){
     });
 }
 
-function initPage(){
+function initPage() {
     let request = {
         page: currentPage,
         pageSize: pageSize,
@@ -145,13 +147,13 @@ function initPage(){
         type: "POST",
         contentType: "application/json",
         url: "/api/advertisements/filter",
-        headers:{
+        headers: {
             'Authorization': localStorage.getItem('token')
         },
         data: JSON.stringify(request),
         dataType: 'json',
         success: function (data) {
-            if(data.pageCount === 0){
+            if (data.pageCount === 0) {
                 return;
             }
             pageCount = data.pageCount;
@@ -160,8 +162,8 @@ function initPage(){
                 "<span aria-hidden=\"true\">&laquo;</span>" +
                 "</a>" +
                 "</li>";
-            for(let i = 0; i < pageCount && i < pageSize; i++){
-                html += "<li class=\"page-item\" id=\"page_" + i + "\" onclick=\"pageChange(" + i + ")\"><a class=\"page-link\" href=\"#\">" + (i+1) + "</a></li>";
+            for (let i = 0; i < pageCount && i < pageSize; i++) {
+                html += "<li class=\"page-item\" id=\"page_" + i + "\" onclick=\"pageChange(" + i + ")\"><a class=\"page-link\" href=\"#\">" + (i + 1) + "</a></li>";
             }
             html += "<li class=\"page-item\" id=\"page_next\" onclick=\"pageNext(this)\">" +
                 "<a class=\"page-link\" href=\"#\" aria-label=\"Next\">" +
@@ -171,7 +173,7 @@ function initPage(){
             $("#paginator").append(html);
             $("#page_" + currentPage).addClass("active");
             $("#page_prev").addClass("disabled");
-            if(currentPage == pageCount-1){
+            if (currentPage == pageCount - 1) {
                 $("#page_next").addClass("disabled");
             }
         },
@@ -181,65 +183,63 @@ function initPage(){
     });
 }
 
-function pagePrev(elem){
-    if($(elem).hasClass("disabled")){
+function pagePrev(elem) {
+    if ($(elem).hasClass("disabled")) {
         return;
     }
     $("#page_" + currentPage).removeClass("active");
     currentPage -= 1;
     $("#page_" + currentPage).addClass("active");
-    if(currentPage == 0){
+    if (currentPage == 0) {
         $("#page_prev").addClass("disabled");
     }
-    if(currentPage < pageCount){
+    if (currentPage < pageCount) {
         $("#page_next").removeClass("disabled");
     }
     initAdvertisements(currentPage, pageSize);
 }
 
-function pageNext(elem){
-    if($(elem).hasClass("disabled")){
+function pageNext(elem) {
+    if ($(elem).hasClass("disabled")) {
         return;
     }
     $("#page_" + currentPage).removeClass("active");
     currentPage += 1;
     $("#page_" + currentPage).addClass("active");
-    if(currentPage > 0){
+    if (currentPage > 0) {
         $("#page_prev").removeClass("disabled");
     }
-    if(currentPage == pageCount-1){
+    if (currentPage == pageCount - 1) {
         $("#page_next").addClass("disabled");
     }
     initAdvertisements(currentPage, pageSize);
 }
 
-function pageChange(page){
+function pageChange(page) {
     $("#page_" + currentPage).removeClass("active");
     $("#page_" + page).addClass("active");
     currentPage = page;
-    if(currentPage == pageCount-1){
+    if (currentPage == pageCount - 1) {
         $("#page_next").addClass("disabled");
-    }
-    else if($("#page_next").hasClass("disabled")){
+    } else if ($("#page_next").hasClass("disabled")) {
         $("#page_next").removeClass("disabled");
     }
-    if(currentPage == 0){
+    if (currentPage == 0) {
         $("#page_prev").addClass("disabled");
-    }
-    else if($("#page_prev").hasClass("disabled")){
+    } else if ($("#page_prev").hasClass("disabled")) {
         $("#page_prev").removeClass("disabled");
     }
     initAdvertisements(currentPage, pageSize);
 }
 
-function initContacts(){
+function initContacts() {
     $.ajax({
         type: "GET",
         contentType: "application/json",
         url: "/api/contacts",
         dataType: 'json',
         success: function (data) {
-                $("#contacts").append("<li>" + data.phone + "</li>").append("<li>" + data.email + "</li>");
+            $("#contacts").append("<li>" + data.phone + "</li>").append("<li>" + data.email + "</li>");
         },
         error: function (e) {
             console.log(e);
@@ -247,12 +247,12 @@ function initContacts(){
     });
 }
 
-function initCategories(){
+function initCategories() {
     $.ajax({
         type: "GET",
         contentType: "application/json",
         url: "/api/categories",
-        headers:{
+        headers: {
             'Authorization': localStorage.getItem('token')
         },
         dataType: 'json',
@@ -267,36 +267,34 @@ function initCategories(){
     });
 }
 
-function categoryOpenPage(elem){
+function categoryOpenPage(elem) {
     localStorage.setItem('category', $(elem).attr('id'));
     location.assign("/advertisements");
 }
 
-function authorization(){
+function authorization() {
     let email = $("#exampleInputEmail").val().trim();
     let pass = $("#exampleInputPassword").val().trim();
 
-    if(!email){
-        if(!$("#exampleInputEmail").hasClass("is-invalid")) {
+    if (!email) {
+        if (!$("#exampleInputEmail").hasClass("is-invalid")) {
             $("#exampleInputEmail").addClass("is-invalid");
             $("#authValEmail").append("<p>Необходимо заполнить поле</p>");
         }
-    }
-    else{
-        if($("#exampleInputEmail").hasClass("is-invalid")) {
+    } else {
+        if ($("#exampleInputEmail").hasClass("is-invalid")) {
             $("#exampleInputEmail").removeClass("is-invalid");
             $("#authValEmail").empty();
         }
     }
 
-    if(!pass){
-        if(!$("#exampleInputPassword").hasClass("is-invalid")) {
+    if (!pass) {
+        if (!$("#exampleInputPassword").hasClass("is-invalid")) {
             $("#exampleInputPassword").addClass("is-invalid");
             $("#authValPassword").append("<p>Необходимо заполнить поле</p>");
         }
-    }
-    else{
-        if($("#exampleInputPassword").hasClass("is-invalid")) {
+    } else {
+        if ($("#exampleInputPassword").hasClass("is-invalid")) {
             $("#exampleInputPassword").removeClass("is-invalid");
             $("#authValPassword").empty();
         }
@@ -311,7 +309,7 @@ function authorization(){
         type: "POST",
         contentType: "application/json",
         url: "/api/account/authenticate",
-        headers:{
+        headers: {
             'Authorization': localStorage.getItem('token')
         },
         dataType: "json",
@@ -319,7 +317,7 @@ function authorization(){
         statusCode: {
             200:
                 function (data) {
-                //FIXME не исчезает уведомление при переходе в другое окно
+                    //FIXME не исчезает уведомление при переходе в другое окно
                     if ($("#authorModalDialog").find(".error").children().length > 0) {
                         $("#authorModalDialog").find("#error").remove();
                     }
@@ -329,7 +327,7 @@ function authorization(){
                 },
             403:
                 function (data) {
-                    if($("#authorModalDialog").find(".error").children().length === 0) {
+                    if ($("#authorModalDialog").find(".error").children().length === 0) {
                         let html = "<div id='error' class=\"alert alert-danger\" role=\"alert\">" +
                             "Возникла ошибка при авторизации!" +
                             "</div>";
@@ -341,68 +339,63 @@ function authorization(){
     });
 }
 
-function registration(){
+function registration() {
     let email = $("#exampleInputEmail1").val().trim();
     let name = $("#exampleInputName").val().trim();
     let pass1 = $("#exampleInputPassword1").val().trim();
     let pass2 = $("#exampleInputPassword2").val().trim();
 
-    if(!email){
-        if(!$("#exampleInputEmail1").hasClass("is-invalid")) {
+    if (!email) {
+        if (!$("#exampleInputEmail1").hasClass("is-invalid")) {
             $("#exampleInputEmail1").addClass("is-invalid");
             $("#regValEmail").append("<p>Необходимо заполнить поле</p>");
         }
-    }
-    else{
-        if($("#exampleInputEmail1").hasClass("is-invalid")) {
+    } else {
+        if ($("#exampleInputEmail1").hasClass("is-invalid")) {
             $("#exampleInputEmail1").removeClass("is-invalid");
             $("#regValEmail").empty();
         }
     }
-    if(!name){
-        if(!$("#exampleInputName").hasClass("is-invalid")) {
+    if (!name) {
+        if (!$("#exampleInputName").hasClass("is-invalid")) {
             $("#exampleInputName").addClass("is-invalid");
             $("#regValName").append("<p>Необходимо заполнить поле</p>");
         }
-    }
-    else{
-        if($("#exampleInputName").hasClass("is-invalid")) {
+    } else {
+        if ($("#exampleInputName").hasClass("is-invalid")) {
             $("#exampleInputName").removeClass("is-invalid");
             $("#regValName").empty();
         }
     }
-    if(!pass1){
-        if(!$("#exampleInputPassword1").hasClass("is-invalid")) {
+    if (!pass1) {
+        if (!$("#exampleInputPassword1").hasClass("is-invalid")) {
             $("#exampleInputPassword1").addClass("is-invalid");
             $("#regValPassword1").append("<p>Необходимо заполнить поле</p>");
         }
-    }
-    else{
-        if($("#exampleInputPassword1").hasClass("is-invalid")) {
+    } else {
+        if ($("#exampleInputPassword1").hasClass("is-invalid")) {
             $("#exampleInputPassword1").removeClass("is-invalid");
             $("#regValPassword1").empty();
         }
     }
-    if(!pass2){
-        if(!$("#exampleInputPassword2").hasClass("is-invalid")) {
+    if (!pass2) {
+        if (!$("#exampleInputPassword2").hasClass("is-invalid")) {
             $("#exampleInputPassword2").addClass("is-invalid");
             $("#regValPassword2").append("<p>Необходимо заполнить поле</p>");
         }
-    }
-    else{
-        if($("#exampleInputPassword2").hasClass("is-invalid")) {
+    } else {
+        if ($("#exampleInputPassword2").hasClass("is-invalid")) {
             $("#exampleInputPassword2").removeClass("is-invalid");
             $("#regValPassword2").empty();
         }
-        if(pass1 !== pass2){
-            if(!$("#exampleInputPassword1").hasClass("is-invalid") && !$("#exampleInputPassword2").hasClass("is-invalid")) {
+        if (pass1 !== pass2) {
+            if (!$("#exampleInputPassword1").hasClass("is-invalid") && !$("#exampleInputPassword2").hasClass("is-invalid")) {
                 $("#exampleInputPassword1").addClass("is-invalid");
                 $("#exampleInputPassword2").addClass("is-invalid");
                 $("#regValPassword2").append("<p>Пароли не совпадают</p>");
             }
-        }
-        else{
-            if($("#exampleInputPassword1").hasClass("is-invalid") && $("#exampleInputPassword2").hasClass("is-invalid")) {
+        } else {
+            if ($("#exampleInputPassword1").hasClass("is-invalid") && $("#exampleInputPassword2").hasClass("is-invalid")) {
                 $("#exampleInputPassword2").removeClass("is-invalid");
                 $("#regValPassword2").empty();
             }
@@ -419,7 +412,7 @@ function registration(){
         type: "POST",
         contentType: "application/json",
         url: "/api/account/register",
-        headers:{
+        headers: {
             'Authorization': localStorage.getItem('token')
         },
         dataType: "json",
@@ -427,7 +420,7 @@ function registration(){
         statusCode: {
             200:
                 function (data) {
-                    if($("#registerModalDialog").find(".error").children().length > 0) {
+                    if ($("#registerModalDialog").find(".error").children().length > 0) {
                         $("#registerModalDialog").find("#error").remove();
                     }
                     localStorage.setItem('token', data.token);
@@ -437,7 +430,7 @@ function registration(){
 
             403:
                 function (data) {
-                    if($("#registerModalDialog").find(".error").children().length === 0) {
+                    if ($("#registerModalDialog").find(".error").children().length === 0) {
                         let html = "<div id='error' class=\"alert alert-danger\" role=\"alert\">" +
                             "Возникла ошибка при регистрации!" +
                             "</div>";
@@ -449,13 +442,13 @@ function registration(){
     });
 }
 
-function showAdvert(advertisement){
+function showAdvert(advertisement) {
     let advertId = $(advertisement).find("#idAdvert")[0].innerHTML;
     $.ajax({
         type: "GET",
         contentType: "application/json",
         url: "/api/advertisements/" + advertId,
-        headers:{
+        headers: {
             'Authorization': localStorage.getItem('token')
         },
         dataType: 'json',
@@ -487,7 +480,7 @@ function showAdvert(advertisement){
                 "title=\"Доступно только для авторизованных пользователей\">" +
                 "Посмотреть полностью</button>";
 
-            if(account === null){
+            if (account === null) {
                 $("#tooltipFull").tooltip();
             }
 
@@ -502,20 +495,19 @@ function showAdvert(advertisement){
     });
 }
 
-function full(id){
+function full(id) {
     checkToken();
-    if(account !== ""){
+    if (account !== "") {
         localStorage.setItem('advertId', id);
         location.assign("/createAdvertisement");
     }
 }
 
-function createAdvertisement(){
+function createAdvertisement() {
     checkToken();
-    if(account !== ""){
+    if (account !== "") {
         location.assign("/createAdvertisement");
-    }
-    else{
+    } else {
         $("#authorization").modal('show');
     }
 }
