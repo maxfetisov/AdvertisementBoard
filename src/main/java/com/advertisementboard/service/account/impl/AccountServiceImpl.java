@@ -47,7 +47,7 @@ public class AccountServiceImpl implements AccountService {
                 .login(request.getLogin())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .name(request.getName())
-                .role(roleMapper.roleDtoToRole(role))
+                .role(role)
                 .build();
         userService.createUser(user);
         return AuthenticationResponseDto.builder()
