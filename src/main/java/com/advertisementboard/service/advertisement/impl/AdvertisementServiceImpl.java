@@ -87,6 +87,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     public void updateAdvertisement(final AdvertisementDto advertisement, final UserDto user) {
         advertisementRepository.findById(advertisement.getId()).ifPresentOrElse(oldCategory -> {
                     advertisement.setUser(user);
+                    advertisement.setStatus(AdvertisementStatus.NOT_VERIFIED);
                     advertisementRepository.save(
                             advertisementMapper.advertisementDtoToAdvertisement(advertisement)
                     );
