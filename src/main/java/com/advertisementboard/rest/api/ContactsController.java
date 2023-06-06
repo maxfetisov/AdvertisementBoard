@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/contacts")
+@RequestMapping("/api/contacts")
 public class ContactsController {
 
     @Value("#{${advertisement-board.contacts}}")

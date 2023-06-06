@@ -3,7 +3,6 @@ package com.advertisementboard.service.initialization.impl;
 import com.advertisementboard.data.dto.authentication.RegistrationRequestDto;
 import com.advertisementboard.data.dto.category.CategoryDto;
 import com.advertisementboard.data.dto.role.RoleDto;
-import com.advertisementboard.data.entity.Category;
 import com.advertisementboard.data.enumeration.UserRole;
 import com.advertisementboard.exception.entity.EntityAlreadyExistException;
 import com.advertisementboard.service.account.AccountService;

@@ -4,8 +4,9 @@ import com.advertisementboard.data.dto.advertisement.AdvertisementDto;
 import com.advertisementboard.data.dto.advertisement.AdvertisementPageRequestDto;
 import com.advertisementboard.data.dto.advertisement.AdvertisementPageResponseDto;
 import com.advertisementboard.data.dto.advertisement.AdvertisementRequestDto;
-import com.advertisementboard.data.dto.user.UserDto;
 import com.advertisementboard.data.entity.User;
+import com.advertisementboard.data.enumeration.UserRole;
+import com.advertisementboard.exception.role.NoPrivilegeException;
 import com.advertisementboard.service.advertisement.AdvertisementService;
 import com.advertisementboard.service.mapper.AdvertisementRequestMapper;
 import com.advertisementboard.service.user.UserService;
@@ -25,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/advertisements")
+@RequestMapping("/api/advertisements")
 @RequiredArgsConstructor
 public class AdvertisementController {
 
@@ -67,13 +68,29 @@ public class AdvertisementController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateAdvertisement(@RequestBody final AdvertisementDto request) {
+    public ResponseEntity<?> updateAdvertisement(
+            final Authentication authentication,
+            @RequestBody final AdvertisementDto request
+    ) {
+        User user = (User)authentication.getPrincipal();
+        if(!(user.getRole().getName().equals(UserRole.ADMINISTRATOR.name())
+                || List.of(UserRole.USER.name(), UserRole.MODERATOR.name()).contains(user.getRole().getName())
+                && advertisementService.getAdvertisement(request.getId()).getUser().getLogin().equals(user.getLogin())))
+            throw new NoPrivilegeException();
         advertisementService.updateAdvertisement(request);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteAdvertisement(@PathVariable final long id) {
+    public ResponseEntity<?> deleteAdvertisement(
+            final Authentication authentication,
+            @PathVariable("id") final Long id
+    ) {
+        User user = (User)authentication.getPrincipal();
+        if(!(user.getRole().getName().equals(UserRole.ADMINISTRATOR.name())
+        || List.of(UserRole.USER.name(), UserRole.MODERATOR.name()).contains(user.getRole().getName())
+                && advertisementService.getAdvertisement(id).getUser().getLogin().equals(user.getLogin())))
+            throw new NoPrivilegeException();
         advertisementService.deleteAdvertisement(id);
         return ResponseEntity.ok().build();
     }

@@ -4,7 +4,6 @@ import com.advertisementboard.data.dto.user.UserDto;
 import com.advertisementboard.exception.entity.EntityAlreadyExistException;
 import com.advertisementboard.exception.entity.EntityNotExistException;
 import com.advertisementboard.repository.UserRepository;
-import com.advertisementboard.service.security.JwtService;
 import com.advertisementboard.service.user.UserService;
 import com.advertisementboard.service.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;

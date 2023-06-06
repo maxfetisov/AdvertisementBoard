@@ -1,7 +1,6 @@
 package com.advertisementboard.service.user.impl;
 
 import com.advertisementboard.data.dto.role.RoleDto;
-import com.advertisementboard.data.entity.Role;
 import com.advertisementboard.data.enumeration.UserRole;
 import com.advertisementboard.exception.entity.EntityAlreadyExistException;
 import com.advertisementboard.exception.entity.EntityNotExistException;

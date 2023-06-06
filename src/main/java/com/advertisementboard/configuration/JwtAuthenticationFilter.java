@@ -1,6 +1,5 @@
 package com.advertisementboard.configuration;
 
-import com.advertisementboard.data.dto.user.UserDto;
 import com.advertisementboard.data.entity.User;
 import com.advertisementboard.service.mapper.UserMapper;
 import com.advertisementboard.service.security.JwtService;
