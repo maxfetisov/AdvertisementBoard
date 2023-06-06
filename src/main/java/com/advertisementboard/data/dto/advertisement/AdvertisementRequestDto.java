@@ -18,9 +18,6 @@ public class AdvertisementRequestDto {
     private String text;
 
     @NonNull
-    private String userLogin;
-
-    @NonNull
     private Long categoryId;
 
     private String contacts;
