@@ -48,6 +48,8 @@ public class SecurityConfiguration {
                 .disable()
                 .authorizeHttpRequests()
                 .requestMatchers(
+                        "/api/advertisements",
+                        "/api/advertisements/{id}",
                         "/api/account/**",
                         "/home",
                         "/advertisements",
@@ -57,7 +59,8 @@ public class SecurityConfiguration {
                         "/image/**",
                         "/api/contacts",
                         "/api/advertisements/filter",
-                        "/favicon.ico"
+                        "/favicon.ico",
+                        "/webjars/jquery/3.6.4/jquery.min.js"
                 ).permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/categories").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/categories")
