@@ -48,7 +48,7 @@ function initAdvertisements(curPage, pageSize){
             let html = "";
             if(data.pageCount === 0){
                 html = "<h3>Список пуст!</h3>";
-                $("#listAdverts").prepend(html);
+                $("#listEmpty").prepend(html);
                 return;
             }
             data.advertisements.forEach((advert) => {
@@ -239,6 +239,43 @@ function authorization(){
             $("#authValPassword").empty();
         }
     }
+
+    let request = {
+        login: email,
+        password: pass
+    }
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/api/account/authenticate",
+        dataType: "json",
+        data: JSON.stringify(request),
+        statusCode: {
+            200:
+                function (data) {
+                        if($("#authorModalDialog").find(".error").children().length > 0) {
+                            $("#authorModalDialog").find("#error").remove();
+                        }
+                        localStorage.setItem('token', data.token);
+                        $("#authorization").modal('hide');
+                        $("#navbarCollapse").children().remove();
+                        //TODO выводить имя пользователя
+                        $("#navbarCollapse").append("<a class=\"navbar-brand\" href=\"#\">" + "Я" + "</a>");
+                    },
+            403:
+                function (data) {
+                    console.log($("#authorModalDialog").find(".error").children().length === 0);
+                    if($("#authorModalDialog").find(".error").children().length === 0) {
+                        let html = "<div id='error' class=\"alert alert-danger\" role=\"alert\">" +
+                            "Возникла ошибка при авторизации!" +
+                            "</div>";
+                        $(".error").append(html);
+                    }
+                    console.log(data);
+                }
+        }
+    });
 }
 
 function registration(){
@@ -308,6 +345,44 @@ function registration(){
             }
         }
     }
+
+    let request = {
+        login: email,
+        name: name,
+        password: pass1
+    }
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/api/account/register",
+        dataType: "json",
+        data: JSON.stringify(request),
+        statusCode: {
+            200:
+                function (data) {
+                    if($("#registerModalDialog").find(".error").children().length > 0) {
+                        $("#registerModalDialog").find("#error").remove();
+                    }
+                    localStorage.setItem('token', data.token);
+                    $("#registration").modal('hide');
+                    $("#navbarCollapse").children().remove();
+                    //TODO выводить имя пользователя
+                    $("#navbarCollapse").append("<a class=\"navbar-brand\" href=\"#\">" + "Я" + "</a>");
+                },
+
+            403:
+                function (data) {
+                    if($("#registerModalDialog").find(".error").children().length === 0) {
+                        let html = "<div id='error' class=\"alert alert-danger\" role=\"alert\">" +
+                            "Возникла ошибка при регистрации!" +
+                            "</div>";
+                        $(".error").append(html);
+                    }
+                    console.log(data);
+                }
+        }
+    });
 }
 
 function showAdvert(advertisement){

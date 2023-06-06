@@ -51,7 +51,7 @@ public class AccountServiceImpl implements AccountService {
                 .build();
         userService.createUser(user);
         return AuthenticationResponseDto.builder()
-                .token(jwtService.generateToken(userMapper.userDtoToUser(user)))
+                .token("Bearer " + jwtService.generateToken(userMapper.userDtoToUser(user)))
                 .build();
     }
 
@@ -62,7 +62,7 @@ public class AccountServiceImpl implements AccountService {
         );
         UserDto user = userService.getUser(request.getLogin());
         return AuthenticationResponseDto.builder()
-                .token(jwtService.generateToken(userMapper.userDtoToUser(user)))
+                .token("Bearer " + jwtService.generateToken(userMapper.userDtoToUser(user)))
                 .build();
     }
 

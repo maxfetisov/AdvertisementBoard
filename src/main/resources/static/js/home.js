@@ -1,7 +1,22 @@
 onload = function () {
+    initButtons();
     initCategories();
     initContacts();
     initCategoriesAdvertisements();
+}
+
+function initButtons(){
+    if(localStorage.getItem('token') == null){
+        let html = "<button type=\"button\" class=\"btn btn-outline-light me-2\" data-bs-toggle=\"modal\" " +
+            "data-bs-target=\"#authorization\">Войти</button>" +
+            "<button type=\"button\" class=\"btn btn-warning\" data-bs-toggle=\"modal\" " +
+            "data-bs-target=\"#registration\">Зарегистрироваться</button>";
+        $("#navbarCollapse").append(html);
+    }
+    else {
+        //TODO выводить имя пользователя
+        $("#navbarCollapse").append("<a class=\"navbar-brand\" href=\"#\">" + "Я" + "</a>");
+    }
 }
 
 function initContacts(){
@@ -9,6 +24,9 @@ function initContacts(){
         type: "GET",
         contentType: "application/json",
         url: "/api/contacts",
+        headers:{
+            'Authorization': localStorage.getItem('token')
+        },
         dataType: 'json',
         success: function (data) {
                 $("#contacts").append("<li>" + data.phone + "</li>").append("<li>" + data.email + "</li>");
@@ -24,10 +42,14 @@ function initCategories(){
         type: "GET",
         contentType: "application/json",
         url: "/api/categories",
+        headers:{
+            'Authorization': localStorage.getItem('token')
+        },
         dataType: 'json',
         success: function (data) {
             data.forEach((category) => {
-                $("#vertical").append("<li id='" + category.id + "' onclick='categoryOpenPage(this)'>" + category.name + "</li>");
+                $("#vertical").append("<li id='" + category.id + "' onclick='categoryOpenPage(this)'>" + category.name +
+                    "</li>");
             })
         },
         error: function (e) {
@@ -46,6 +68,9 @@ function initCategoriesAdvertisements(){
         type: "GET",
         contentType: "application/json",
         url: "/api/categories",
+        headers:{
+            'Authorization': localStorage.getItem('token')
+        },
         dataType: 'json',
         success: function (data) {
             if(data.length % 3 === 0){
@@ -58,10 +83,12 @@ function initCategoriesAdvertisements(){
                         "<div class=\"h-100 p-4 bg-light border rounded-3\" onclick=\"openAdvertisement(this)\">";
                     html += "<h3>" + data[i].name + "</h3><p>" + data[i].id + "</p>";
                     html += "</div></div>";
-                    html += "<div class=\"col-md-4\"><div class=\"h-100 p-4 bg-light border rounded-3\"  onclick=\"openAdvertisement(this)\">";
+                    html += "<div class=\"col-md-4\"><div class=\"h-100 p-4 bg-light border rounded-3\"  " +
+                        "onclick=\"openAdvertisement(this)\">";
                     html += "<h3>" + data[i+1].name + "</h3><p>" + data[i+1].id + "</p>";
                     html += "</div></div>";
-                    html += "<div class=\"col-md-4\"><div class=\"h-100 p-4 bg-light border rounded-3\"  onclick=\"openAdvertisement(this)\">";
+                    html += "<div class=\"col-md-4\"><div class=\"h-100 p-4 bg-light border rounded-3\"  " +
+                        "onclick=\"openAdvertisement(this)\">";
                     html += "<h3>" + data[i+2].name + "</h3><p>" + data[i+2].id + "</p>";
                     html += "</div></div></div>";
                 }
@@ -72,37 +99,45 @@ function initCategoriesAdvertisements(){
                     "<div class=\"h-100 p-4 bg-light border rounded-3\"  onclick=\"openAdvertisement(this)\">";
                 html += "<h3>" + data[0].name + "</h3><p>" + data[0].id + "</p>";
                 html += "</div></div>";
-                html += "<div class=\"col-md-6\"><div class=\"h-100 p-4 bg-light border rounded-3\"  onclick=\"openAdvertisement(this)\">";
+                html += "<div class=\"col-md-6\"><div class=\"h-100 p-4 bg-light border rounded-3\"  " +
+                    "onclick=\"openAdvertisement(this)\">";
                 html += "<h3>" + data[1].name + "</h3><p>" + data[1].id + "</p>";
                 html += "</div></div></div>";
                 for(let i = 2; i < data.length; i += 3){
-                    html += "<div class=\"row blocksOfAdvertisements\"><div class=\"col-md-4\"><div class=\"h-100 p-4 bg-light border rounded-3\"  " +
+                    html += "<div class=\"row blocksOfAdvertisements\"><div class=\"col-md-4\"><div " +
+                        "class=\"h-100 p-4 bg-light border rounded-3\"  " +
                         "onclick=\"openAdvertisement(this)\">";
                     html += "<h3>" + data[i].name + "</h3><p>" + data[i].id + "</p>";
                     html += "</div></div>";
-                    html += "<div class=\"col-md-4\"><div class=\"h-100 p-4 bg-light border rounded-3\"  onclick=\"openAdvertisement(this)\">";
+                    html += "<div class=\"col-md-4\"><div class=\"h-100 p-4 bg-light border rounded-3\"  " +
+                        "onclick=\"openAdvertisement(this)\">";
                     html += "<h3>" + data[i+1].name + "</h3><p>" + data[i+1].id + "</p>";
                     html += "</div></div>";
-                    html += "<div class=\"col-md-4\"><div class=\"h-100 p-4 bg-light border rounded-3\"  onclick=\"openAdvertisement(this)\">";
+                    html += "<div class=\"col-md-4\"><div class=\"h-100 p-4 bg-light border rounded-3\"  " +
+                        "onclick=\"openAdvertisement(this)\">";
                     html += "<h3>" + data[i+2].name + "</h3><p>" + data[i+2].id + "</p>";
                     html += "</div></div></div>";
                 }
                 $("#contentAdvertisements").append(html);
             }
             else{
-                let html = "<div class=\"row blocksOfAdvertisements\"><div class=\"col-md-12\"><div class=\"h-100 p-4 bg-light border rounded-3\"" +
+                let html = "<div class=\"row blocksOfAdvertisements\"><div class=\"col-md-12\"><div " +
+                    "class=\"h-100 p-4 bg-light border rounded-3\"" +
                     " onclick=\"openAdvertisement(this)\">";
                 html += "<h3>" + data[0].name + "</h3><p>" + data[0].id + "</p>";
                 html += "</div></div></div>";
                 for(let i = 1; i < data.length; i += 3){
-                    html += "<div class=\"row blocksOfAdvertisements\"><div class=\"col-md-4\"><div class=\"h-100 p-4 bg-light border rounded-3\"" +
+                    html += "<div class=\"row blocksOfAdvertisements\"><div class=\"col-md-4\"><div " +
+                        "class=\"h-100 p-4 bg-light border rounded-3\"" +
                         " onclick=\"openAdvertisement(this)\">";
                     html += "<h3>" + data[i].name + "</h3><p>" + data[i].id + "</p>";
                     html += "</div></div>";
-                    html += "<div class=\"col-md-4\"><div class=\"h-100 p-4 bg-light border rounded-3\"  onclick=\"openAdvertisement(this)\">";
+                    html += "<div class=\"col-md-4\"><div class=\"h-100 p-4 bg-light border rounded-3\"  " +
+                        "onclick=\"openAdvertisement(this)\">";
                     html += "<h3>" + data[i+1].name + "</h3><p>" + data[i+1].id + "</p>";
                     html += "</div></div>";
-                    html += "<div class=\"col-md-4\"><div class=\"h-100 p-4 bg-light border rounded-3\"  onclick=\"openAdvertisement(this)\">";
+                    html += "<div class=\"col-md-4\"><div class=\"h-100 p-4 bg-light border rounded-3\"  " +
+                        "onclick=\"openAdvertisement(this)\">";
                     html += "<h3>" + data[i+2].name + "</h3><p>" + data[i+2].id + "</p>";
                     html += "</div></div></div>";
                 }
@@ -166,6 +201,43 @@ function authorization(){
             $("#authValPassword").empty();
         }
     }
+
+    let request = {
+        login: email,
+        password: pass
+    }
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/api/account/authenticate",
+        dataType: "json",
+        data: JSON.stringify(request),
+        statusCode: {
+            200:
+                function (data) {
+                    if($("#authorModalDialog").find(".error").children().length > 0) {
+                        $("#authorModalDialog").find("#error").remove();
+                    }
+                    localStorage.setItem('token', data.token);
+                    $("#authorization").modal('hide');
+                    $("#navbarCollapse").children().remove();
+                    //TODO выводить имя пользователя
+                    $("#navbarCollapse").append("<a class=\"navbar-brand\" href=\"#\">" + "Я" + "</a>");
+                },
+            403:
+                function (data) {
+                    console.log($("#authorModalDialog").find(".error").children().length === 0);
+                    if($("#authorModalDialog").find(".error").children().length === 0) {
+                        let html = "<div id='error' class=\"alert alert-danger\" role=\"alert\">" +
+                            "Возникла ошибка при авторизации!" +
+                            "</div>";
+                        $(".error").append(html);
+                    }
+                    console.log(data);
+                }
+        }
+    });
 }
 
 function registration(){
@@ -235,8 +307,54 @@ function registration(){
             }
         }
     }
+
+    let request = {
+        login: email,
+        name: name,
+        password: pass1
+    }
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/api/account/register",
+        dataType: "json",
+        data: JSON.stringify(request),
+        statusCode: {
+            200:
+                function (data) {
+                    if($("#registerModalDialog").find(".error").children().length > 0) {
+                        $("#registerModalDialog").find("#error").remove();
+                    }
+                    localStorage.setItem('token', data.token);
+                    $("#registration").modal('hide');
+                    $("#navbarCollapse").children().remove();
+                    //TODO выводить имя пользователя
+                    $("#navbarCollapse").append("<a class=\"navbar-brand\" href=\"#\">" + "Я" + "</a>");
+                },
+
+            403:
+                function (data) {
+                    if($("#registerModalDialog").find(".error").children().length === 0) {
+                        let html = "<div id='error' class=\"alert alert-danger\" role=\"alert\">" +
+                            "Возникла ошибка при регистрации!" +
+                            "</div>";
+                        $(".error").append(html);
+                    }
+                    console.log(data);
+                }
+        }
+    });
 }
 
 function createAdvertisement(){
-    window.open("createAdvertisement", "Создание объявления");
+    if(localStorage.getItem('token') !== null){
+        //TODO проверить пользователя при открытии страницы на 403 ошибку
+        location.assign("/createAdvertisement");
+        return;
+    }
+    else{
+        $("#authorization").modal('show');
+    }
+
 }

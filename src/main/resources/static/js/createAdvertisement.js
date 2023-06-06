@@ -48,7 +48,6 @@ function initChapter(){
         url: "/api/categories",
         dataType: 'json',
         success: function (data) {
-            let i = 1;
             data.forEach((category) => {
                 $("#chapter").append("<option>" + category.name + "</option>");
             })
@@ -144,9 +143,7 @@ function create(){
 }
 
 function cancel(){
-    //TODO возможно стоит сделать переадресацию на предыдущую страницу, т.к. при открытии только этой страницы закрытие вкладки не работает
-
-    window.close();
+    location.assign("/advertisements");
 }
 
 function remove(){
