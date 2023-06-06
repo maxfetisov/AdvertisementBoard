@@ -37,8 +37,39 @@ public class InitializationServiceImpl implements InitializationService {
 
     private void initializeCategories() {
         List.of(
-                CategoryDto.builder().
-        ).forEach(this::initializeCategory);
+                CategoryDto.builder()
+                        .name("Недвижимость")
+                        .description("Описание недвижимости")
+                        .build(),
+                CategoryDto.builder()
+                        .name("Работа")
+                        .description("Описание работы")
+                        .build(),
+                CategoryDto.builder()
+                        .name("Товары")
+                        .description("Описание товаров")
+                        .build(),
+                CategoryDto.builder()
+                        .name("Услуги")
+                        .description("Описание услуг")
+                        .build(),
+                CategoryDto.builder()
+                        .name("Бизнес")
+                        .description("Описание бизнесов")
+                        .build(),
+                CategoryDto.builder()
+                        .name("Животные")
+                        .description("Описание животных")
+                        .build(),
+                CategoryDto.builder()
+                        .name("Транспорт")
+                        .description("Описание транспорта")
+                        .build(),
+                CategoryDto.builder()
+                        .name("Зарубежная недвижимость")
+                        .description("Описание зарубежной недвижимости")
+                        .build()
+        ).forEach(this::initializeCategory);//FIXME вынести в конфиг
     }
 
     private void initializeRoles() {

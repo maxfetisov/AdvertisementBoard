@@ -41,4 +41,8 @@ public class Advertisement {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    private String contacts;
+
+    private String url;
+
 }

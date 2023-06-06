@@ -1,6 +1,7 @@
 package com.advertisementboard.service.user.impl;
 
 import com.advertisementboard.data.dto.user.UserDto;
+import com.advertisementboard.exception.entity.EntityAlreadyExistException;
 import com.advertisementboard.exception.entity.EntityNotExistException;
 import com.advertisementboard.repository.UserRepository;
 import com.advertisementboard.service.security.JwtService;
@@ -9,7 +10,7 @@ import com.advertisementboard.service.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,6 +23,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(final UserDto user) {
+        if(userRepository.existsByLogin(user.getLogin()))
+            throw new EntityAlreadyExistException(user.toString());
         userRepository.save(userMapper.userDtoToUser(user));
     }
 
