@@ -3,6 +3,7 @@ let pageCount = 0;
 let pageSize = 2;
 
 var account = "";
+var role = "";
 
 onload = function () {
     checkToken();
@@ -27,11 +28,13 @@ function checkToken() {
                 200:
                     function (data) {
                         account = data.login;
+                        role = data.role.name;
                         drawLogin();
                     },
                 403:
                     function (e) {
                         account = "";
+                        role = "";
                         localStorage.setItem('token', "");
                         drawButtons();
                         console.log(e);
@@ -539,6 +542,13 @@ function showAdvert(advertisement) {
                 "title=\"Доступно только для авторизованных пользователей\">" +
                 "Посмотреть полностью</button>";
 
+            if(role === "MODERATOR" || role === "ADMINISTRATOR"){
+                if(data.status !== "CONFIRMED")
+                    text += "<button type='button' style='margin-left: 1em;' class=\"btn btn-success\" onclick='confirmAdvertisement(" + advertId + ")'>Подтвердить</button>"
+                if(data.status !== "REJECTED")
+                    text += "<button type='button' style='margin-left: 1em;' class=\"btn btn-danger\" onclick='rejectAdvertisement(" + advertId + ")'>Отклонить</button>"
+            }
+
             if (account === null) {
                 $("#tooltipFull").tooltip();
             }
@@ -569,4 +579,52 @@ function createAdvertisement() {
     } else {
         $("#authorization").modal('show');
     }
+}
+
+function confirmAdvertisement(id){
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: "/api/advertisements/"+ id +"/confirm",
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        },
+        dataType: "json",
+        statusCode: {
+            200:
+                function (data) {
+                    $('#staticBackdrop').modal('hide');
+                    pageChange(currentPage);
+                },
+
+            403:
+                function (data) {
+
+                }
+        }
+    });
+}
+
+function rejectAdvertisement(id){
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: "/api/advertisements/"+ id +"/reject",
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        },
+        dataType: "json",
+        statusCode: {
+            200:
+                function (data) {
+                    $('#staticBackdrop').modal('hide');
+                    pageChange(currentPage);
+                },
+
+            403:
+                function (data) {
+
+                }
+        }
+    });
 }
