@@ -36,7 +36,8 @@ public class SecurityConfiguration {
                 .disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/api/account/**", "/home", "/advertisements", "/createAdvertisement", "/js/**", "/css/**",
-                        "/image/**", "/api/contacts", "/api/categories", "/api/advertisements/filter", "/favicon.ico")
+                        "/image/**", "/api/contacts", "/api/categories", "/api/advertisements/filter", "/favicon.ico",
+                        "/api/advertisements/{id}")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

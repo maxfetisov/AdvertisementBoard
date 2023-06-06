@@ -32,6 +32,9 @@ h2{
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
+.headerMain{
+  margin-bottom: 1em;
+}
 li{
   list-style-type: none;
   text-align: left;

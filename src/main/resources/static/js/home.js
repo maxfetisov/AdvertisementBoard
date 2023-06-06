@@ -1,3 +1,5 @@
+var account = "";
+
 onload = function () {
     checkToken();
     initCategories();
@@ -112,15 +114,15 @@ function initCategoriesAdvertisements(){
                     html += "<div class=\"row blocksOfAdvertisements\">" +
                         "<div class=\"col-md-4\">" +
                         "<div class=\"h-100 p-4 bg-light border rounded-3\" onclick=\"openAdvertisement(this)\">";
-                    html += "<h3>" + data[i].name + "</h3><p>" + data[i].id + "</p>";
+                    html += "<h3>" + data[i].name + "</h3><p>" + data[i].description + "</p>";
                     html += "</div></div>";
                     html += "<div class=\"col-md-4\"><div class=\"h-100 p-4 bg-light border rounded-3\"  " +
                         "onclick=\"openAdvertisement(this)\">";
-                    html += "<h3>" + data[i+1].name + "</h3><p>" + data[i+1].id + "</p>";
+                    html += "<h3>" + data[i+1].name + "</h3><p>" + data[i+1].description + "</p>";
                     html += "</div></div>";
                     html += "<div class=\"col-md-4\"><div class=\"h-100 p-4 bg-light border rounded-3\"  " +
                         "onclick=\"openAdvertisement(this)\">";
-                    html += "<h3>" + data[i+2].name + "</h3><p>" + data[i+2].id + "</p>";
+                    html += "<h3>" + data[i+2].name + "</h3><p>" + data[i+2].description + "</p>";
                     html += "</div></div></div>";
                 }
                 $("#contentAdvertisements").append(html);
@@ -128,25 +130,25 @@ function initCategoriesAdvertisements(){
             else if(data.length % 3 === 2){
                 let html = "<div class=\"row blocksOfAdvertisements\"><div class=\"col-md-6\">" +
                     "<div class=\"h-100 p-4 bg-light border rounded-3\"  onclick=\"openAdvertisement(this)\">";
-                html += "<h3>" + data[0].name + "</h3><p>" + data[0].id + "</p>";
+                html += "<h3>" + data[0].name + "</h3><p>" + data[0].description + "</p>";
                 html += "</div></div>";
                 html += "<div class=\"col-md-6\"><div class=\"h-100 p-4 bg-light border rounded-3\"  " +
                     "onclick=\"openAdvertisement(this)\">";
-                html += "<h3>" + data[1].name + "</h3><p>" + data[1].id + "</p>";
+                html += "<h3>" + data[1].name + "</h3><p>" + data[1].description + "</p>";
                 html += "</div></div></div>";
                 for(let i = 2; i < data.length; i += 3){
                     html += "<div class=\"row blocksOfAdvertisements\"><div class=\"col-md-4\"><div " +
                         "class=\"h-100 p-4 bg-light border rounded-3\"  " +
                         "onclick=\"openAdvertisement(this)\">";
-                    html += "<h3>" + data[i].name + "</h3><p>" + data[i].id + "</p>";
+                    html += "<h3>" + data[i].name + "</h3><p>" + data[i].description + "</p>";
                     html += "</div></div>";
                     html += "<div class=\"col-md-4\"><div class=\"h-100 p-4 bg-light border rounded-3\"  " +
                         "onclick=\"openAdvertisement(this)\">";
-                    html += "<h3>" + data[i+1].name + "</h3><p>" + data[i+1].id + "</p>";
+                    html += "<h3>" + data[i+1].name + "</h3><p>" + data[i+1].description + "</p>";
                     html += "</div></div>";
                     html += "<div class=\"col-md-4\"><div class=\"h-100 p-4 bg-light border rounded-3\"  " +
                         "onclick=\"openAdvertisement(this)\">";
-                    html += "<h3>" + data[i+2].name + "</h3><p>" + data[i+2].id + "</p>";
+                    html += "<h3>" + data[i+2].name + "</h3><p>" + data[i+2].description + "</p>";
                     html += "</div></div></div>";
                 }
                 $("#contentAdvertisements").append(html);
@@ -155,21 +157,21 @@ function initCategoriesAdvertisements(){
                 let html = "<div class=\"row blocksOfAdvertisements\"><div class=\"col-md-12\"><div " +
                     "class=\"h-100 p-4 bg-light border rounded-3\"" +
                     " onclick=\"openAdvertisement(this)\">";
-                html += "<h3>" + data[0].name + "</h3><p>" + data[0].id + "</p>";
+                html += "<h3>" + data[0].name + "</h3><p>" + data[0].description + "</p>";
                 html += "</div></div></div>";
                 for(let i = 1; i < data.length; i += 3){
                     html += "<div class=\"row blocksOfAdvertisements\"><div class=\"col-md-4\"><div " +
                         "class=\"h-100 p-4 bg-light border rounded-3\"" +
                         " onclick=\"openAdvertisement(this)\">";
-                    html += "<h3>" + data[i].name + "</h3><p>" + data[i].id + "</p>";
+                    html += "<h3>" + data[i].name + "</h3><p>" + data[i].description + "</p>";
                     html += "</div></div>";
                     html += "<div class=\"col-md-4\"><div class=\"h-100 p-4 bg-light border rounded-3\"  " +
                         "onclick=\"openAdvertisement(this)\">";
-                    html += "<h3>" + data[i+1].name + "</h3><p>" + data[i+1].id + "</p>";
+                    html += "<h3>" + data[i+1].name + "</h3><p>" + data[i+1].description + "</p>";
                     html += "</div></div>";
                     html += "<div class=\"col-md-4\"><div class=\"h-100 p-4 bg-light border rounded-3\"  " +
                         "onclick=\"openAdvertisement(this)\">";
-                    html += "<h3>" + data[i+2].name + "</h3><p>" + data[i+2].id + "</p>";
+                    html += "<h3>" + data[i+2].name + "</h3><p>" + data[i+2].description + "</p>";
                     html += "</div></div></div>";
                 }
                 $("#contentAdvertisements").append(html);

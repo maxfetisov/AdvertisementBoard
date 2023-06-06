@@ -41,6 +41,8 @@ function checkToken(){
     }
     else{
         drawButtons();
+        account = "";
+        localStorage.setItem('token', "");
     }
 }
 
@@ -110,7 +112,7 @@ function initAdvertisements(curPage, pageSize){
                     "<div class=\"card mb-3 cardAdvert\" onclick=\"showAdvert(this)\">" +
                     "<div class=\"row g-0\">" +
                     "<div class=\"col-md-4\">" +
-                    "<img src=\"image/2768339668.jpg\" class=\"img-fluid rounded-start\" alt=\"...\">" +
+                    "<img src=\"image/2768339668.jpg\" style='height: 12em' class=\"img-fluid rounded-start\" alt=\"...\">" +
                     "</div>" +
                     "<div class=\"col-md-8\">" +
                     "<div class=\"card-body\">" +
@@ -317,6 +319,7 @@ function authorization(){
         statusCode: {
             200:
                 function (data) {
+                //FIXME не исчезает уведомление при переходе в другое окно
                     if ($("#authorModalDialog").find(".error").children().length > 0) {
                         $("#authorModalDialog").find("#error").remove();
                     }
@@ -452,6 +455,9 @@ function showAdvert(advertisement){
         type: "GET",
         contentType: "application/json",
         url: "/api/advertisements/" + advertId,
+        headers:{
+            'Authorization': localStorage.getItem('token')
+        },
         dataType: 'json',
         success: function (data) {
             // добавление изображений
@@ -476,7 +482,15 @@ function showAdvert(advertisement){
             // добавление текста
             $("#advertModalText").empty();
             let text = "<p class=\"card-text\">" + data.text + "</p>" +
-                "<p class=\"card-text\"><small class=\"text-body-secondary\">" + data.user.name + "</small></p>";
+                "<p class=\"card-text\"><small class=\"text-body-secondary\">" + data.user.name + "</small></p>" +
+                "<button id='tooltipFull' type='button' class=\"btn btn-primary\" onclick='full(" + data.id + ")' " +
+                "title=\"Доступно только для авторизованных пользователей\">" +
+                "Посмотреть полностью</button>";
+
+            if(account === null){
+                $("#tooltipFull").tooltip();
+            }
+
             $("#advertModalText").append(text);
 
             // показать окно
@@ -486,6 +500,14 @@ function showAdvert(advertisement){
             console.log(e);
         }
     });
+}
+
+function full(id){
+    checkToken();
+    if(account !== ""){
+        localStorage.setItem('advertId', id);
+        location.assign("/createAdvertisement");
+    }
 }
 
 function createAdvertisement(){
