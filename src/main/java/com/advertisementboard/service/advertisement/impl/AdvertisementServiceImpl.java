@@ -84,11 +84,14 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     }
 
     @Override
-    public void updateAdvertisement(final AdvertisementDto advertisement) {
-        advertisementRepository.findById(advertisement.getId()).ifPresentOrElse(oldCategory ->
-                        advertisementRepository.save(
-                                advertisementMapper.advertisementDtoToAdvertisement(advertisement)
-                        ),
+    public void updateAdvertisement(final AdvertisementDto advertisement, final UserDto user) {
+        advertisementRepository.findById(advertisement.getId()).ifPresentOrElse(oldCategory -> {
+                    advertisement.setUser(user);
+                    advertisement.setStatus(AdvertisementStatus.NOT_VERIFIED);
+                    advertisementRepository.save(
+                            advertisementMapper.advertisementDtoToAdvertisement(advertisement)
+                    );
+                },
                 () -> {
                     throw new EntityNotExistException(advertisement.getId());
                 });
@@ -96,7 +99,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     @Override
     public void deleteAdvertisement(final Long id) {
-        if(!advertisementRepository.existsById(id))
+        if (!advertisementRepository.existsById(id))
             throw new EntityNotExistException(id);
         advertisementRepository.deleteById(id);
     }
