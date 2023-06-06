@@ -279,6 +279,13 @@ function remove(){
                         const toast = new bootstrap.Toast(document.getElementById('liveToast'));
                         toast.show();
                         console.log(data);
+                    },
+                403:
+                    function (data) {
+                        $("#toastBodyText").append("Это не ваше объявление, вы не можете его удалить.");
+                        const toast = new bootstrap.Toast(document.getElementById('liveToast'));
+                        toast.show();
+                        console.log(data);
                     }
             }
         });
