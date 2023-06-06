@@ -23,7 +23,6 @@ public class AdvertisementDto {
 
     private String text;
 
-    @NonNull
     private UserDto user;
 
     @NonNull
