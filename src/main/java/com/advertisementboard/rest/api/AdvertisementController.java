@@ -4,11 +4,15 @@ import com.advertisementboard.data.dto.advertisement.AdvertisementDto;
 import com.advertisementboard.data.dto.advertisement.AdvertisementPageRequestDto;
 import com.advertisementboard.data.dto.advertisement.AdvertisementPageResponseDto;
 import com.advertisementboard.data.dto.advertisement.AdvertisementRequestDto;
+import com.advertisementboard.data.dto.user.UserDto;
+import com.advertisementboard.data.entity.User;
 import com.advertisementboard.service.advertisement.AdvertisementService;
 import com.advertisementboard.service.mapper.AdvertisementRequestMapper;
+import com.advertisementboard.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +33,8 @@ public class AdvertisementController {
 
     private final AdvertisementRequestMapper advertisementRequestMapper;
 
+    private final UserService userService;
+
     @GetMapping
     public ResponseEntity<List<AdvertisementDto>> getAdvertisementsByFilter() {
         return ResponseEntity.ok().body(advertisementService.getAdvertisements());
@@ -47,10 +53,14 @@ public class AdvertisementController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> createAdvertisement(@RequestBody final AdvertisementRequestDto request) {
+    public ResponseEntity<Long> createAdvertisement(
+            final Authentication authentication,
+            @RequestBody final AdvertisementRequestDto request
+    ) {
         return new ResponseEntity<>(
                 advertisementService.createAdvertisement(
-                        advertisementRequestMapper.advertisementRequestDtoToAdvertisementDto(request)
+                        advertisementRequestMapper.advertisementRequestDtoToAdvertisementDto(request),
+                        userService.getUser(((User)authentication.getPrincipal()).getLogin())
                 ),
                 HttpStatus.CREATED
         );
@@ -65,6 +75,18 @@ public class AdvertisementController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAdvertisement(@PathVariable final long id) {
         advertisementService.deleteAdvertisement(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}/reject")
+    public ResponseEntity<?> rejectAdvertisement(@PathVariable("id") final Long id) {
+        advertisementService.rejectAdvertisement(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}/confirm")
+    public ResponseEntity<?> confirmAdvertisement(@PathVariable("id") final Long id) {
+        advertisementService.confirmAdvertisement(id);
         return ResponseEntity.ok().build();
     }
 

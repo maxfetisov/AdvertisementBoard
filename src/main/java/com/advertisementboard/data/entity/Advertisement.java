@@ -1,7 +1,10 @@
 package com.advertisementboard.data.entity;
 
+import com.advertisementboard.data.enumeration.AdvertisementStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -44,5 +47,8 @@ public class Advertisement {
     private String contacts;
 
     private String url;
+
+    @Enumerated(EnumType.STRING)
+    private AdvertisementStatus status;
 
 }

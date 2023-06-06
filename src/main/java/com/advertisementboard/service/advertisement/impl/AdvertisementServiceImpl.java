@@ -3,7 +3,9 @@ package com.advertisementboard.service.advertisement.impl;
 import com.advertisementboard.data.dto.advertisement.AdvertisementDto;
 import com.advertisementboard.data.dto.advertisement.AdvertisementPageRequestDto;
 import com.advertisementboard.data.dto.advertisement.AdvertisementPageResponseDto;
+import com.advertisementboard.data.dto.user.UserDto;
 import com.advertisementboard.data.entity.Advertisement;
+import com.advertisementboard.data.enumeration.AdvertisementStatus;
 import com.advertisementboard.exception.entity.EntityNotExistException;
 import com.advertisementboard.repository.AdvertisementRepository;
 import com.advertisementboard.service.advertisement.AdvertisementService;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -75,7 +78,9 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     }
 
     @Override
-    public Long createAdvertisement(final AdvertisementDto advertisement) {
+    public Long createAdvertisement(final AdvertisementDto advertisement, final UserDto user) {
+        advertisement.setUser(user);
+        advertisement.setStatus(AdvertisementStatus.NOT_VERIFIED);
         return advertisementRepository.save(advertisementMapper.advertisementDtoToAdvertisement(advertisement)).getId();
     }
 
@@ -95,6 +100,22 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         if(!advertisementRepository.existsById(id))
             throw new EntityNotExistException(id);
         advertisementRepository.deleteById(id);
+    }
+
+    @Override
+    public void rejectAdvertisement(Long id) {
+        updateAdvertisementStatus(id, AdvertisementStatus.REJECTED);
+    }
+
+    @Override
+    public void confirmAdvertisement(Long id) {
+        updateAdvertisementStatus(id, AdvertisementStatus.CONFIRMED);
+    }
+
+    private void updateAdvertisementStatus(Long id, AdvertisementStatus status) {
+        AdvertisementDto advertisement = getAdvertisement(id);
+        advertisement.setStatus(status);
+        advertisementRepository.save(advertisementMapper.advertisementDtoToAdvertisement(advertisement));
     }
 
 }

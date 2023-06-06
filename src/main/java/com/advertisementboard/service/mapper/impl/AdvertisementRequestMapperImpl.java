@@ -21,7 +21,6 @@ public class AdvertisementRequestMapperImpl implements AdvertisementRequestMappe
         return AdvertisementDto.builder()
                 .heading(advertisementRequestDto.getHeading())
                 .text(advertisementRequestDto.getText())
-                .user(userService.getUser(advertisementRequestDto.getUserLogin()))
                 .category(categoryService.getCategory(advertisementRequestDto.getCategoryId()))
                 .build();
     }
@@ -32,7 +31,6 @@ public class AdvertisementRequestMapperImpl implements AdvertisementRequestMappe
                 .heading(advertisementDto.getHeading())
                 .text(advertisementDto.getText())
                 .categoryId(advertisementDto.getCategory().getId())
-                .userLogin(advertisementDto.getUser().getLogin())
                 .build();
     }
 

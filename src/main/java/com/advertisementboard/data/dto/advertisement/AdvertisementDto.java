@@ -3,6 +3,7 @@ package com.advertisementboard.data.dto.advertisement;
 import com.advertisementboard.data.dto.category.CategoryDto;
 import com.advertisementboard.data.dto.user.UserDto;
 
+import com.advertisementboard.data.enumeration.AdvertisementStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,5 +32,7 @@ public class AdvertisementDto {
     private String contacts;
 
     private String url;
+
+    private AdvertisementStatus status;
 
 }
