@@ -15,9 +15,9 @@ public interface AdvertisementService {
 
     AdvertisementPageResponseDto getAdvertisements(AdvertisementPageRequestDto request);
 
-    Long createAdvertisement(AdvertisementDto advertisement, final UserDto user);
+    Long createAdvertisement(AdvertisementDto advertisement, UserDto user);
 
-    void updateAdvertisement(AdvertisementDto advertisement);
+    void updateAdvertisement(AdvertisementDto advertisement, UserDto user);
 
     void deleteAdvertisement(Long id);
 
