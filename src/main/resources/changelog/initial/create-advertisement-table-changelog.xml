@@ -18,6 +18,8 @@
             <column name="user_login" type="VARCHAR(255)">
                 <constraints nullable="false" foreignKeyName="fk_advertisement_user" referencedTableName="user" referencedColumnNames="login"/>
             </column>
+            <column name="contacts" type="TEXT"/>
+            <column name="url" type="VARCHAR(255)"/>
             <column name="category_id" type="BIGINT">
                 <constraints nullable="false" foreignKeyName="fk_advertisement_category" referencedTableName="category" referencedColumnNames="id"/>
             </column>

@@ -28,4 +28,8 @@ public class AdvertisementDto {
     @NonNull
     private CategoryDto category;
 
+    private String contacts;
+
+    private String url;
+
 }

@@ -7,7 +7,6 @@ import com.advertisementboard.data.dto.role.RoleDto;
 import com.advertisementboard.data.dto.user.UserDto;
 import com.advertisementboard.data.enumeration.UserRole;
 import com.advertisementboard.service.account.AccountService;
-import com.advertisementboard.service.mapper.RoleMapper;
 import com.advertisementboard.service.mapper.UserMapper;
 import com.advertisementboard.service.security.JwtService;
 import com.advertisementboard.service.user.RoleService;
@@ -31,8 +30,6 @@ public class AccountServiceImpl implements AccountService {
     private final JwtService jwtService;
 
     private final UserMapper userMapper;
-
-    private final RoleMapper roleMapper;
 
     private final AuthenticationManager authenticationManager;
 

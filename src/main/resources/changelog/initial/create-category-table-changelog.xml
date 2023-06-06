@@ -12,8 +12,9 @@
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_category"/>
             </column>
             <column name="name" type="VARCHAR(255)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
+            <column name="description" type="TEXT"/>
         </createTable>
     </changeSet>
 

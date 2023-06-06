@@ -17,4 +17,6 @@ public class CategoryDto {
     @NonNull
     private String name;
 
+    private String description;
+
 }

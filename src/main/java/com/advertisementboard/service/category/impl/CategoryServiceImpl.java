@@ -21,7 +21,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Long createCategory(final CategoryDto category) {
-        if (category.getId() != null && categoryRepository.existsById(category.getId()))
+        if (categoryRepository.existsByName(category.getName()))
             throw new EntityAlreadyExistException(category.toString());
         return categoryRepository.save(categoryMapper.categoryDtoToCategory(category)).getId();
     }
