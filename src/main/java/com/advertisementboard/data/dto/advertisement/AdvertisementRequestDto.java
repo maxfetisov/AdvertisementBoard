@@ -23,4 +23,8 @@ public class AdvertisementRequestDto {
     @NonNull
     private Long categoryId;
 
+    private String contacts;
+
+    private String url;
+
 }
