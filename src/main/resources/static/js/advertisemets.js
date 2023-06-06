@@ -57,6 +57,13 @@ function drawButtons() {
 function drawLogin() {
     $("#navbarCollapse").children().remove();
     $("#navbarCollapse").append("<a class=\"navbar-brand\" href=\"#\">" + account + "</a>");
+    let html = "<button type=\"button\" class=\"btn btn-outline-light me-2\" onclick='exit()'>Выйти</button>";
+    $("#navbarCollapse").append(html);
+}
+
+function exit(){
+    localStorage.setItem('token', "");
+    location.assign("/advertisements");
 }
 
 function initTitle() {
@@ -275,11 +282,13 @@ function categoryOpenPage(elem) {
 function authorization() {
     let email = $("#exampleInputEmail").val().trim();
     let pass = $("#exampleInputPassword").val().trim();
+    let flag = true;
 
     if (!email) {
         if (!$("#exampleInputEmail").hasClass("is-invalid")) {
             $("#exampleInputEmail").addClass("is-invalid");
             $("#authValEmail").append("<p>Необходимо заполнить поле</p>");
+            flag = false;
         }
     } else {
         if ($("#exampleInputEmail").hasClass("is-invalid")) {
@@ -292,12 +301,17 @@ function authorization() {
         if (!$("#exampleInputPassword").hasClass("is-invalid")) {
             $("#exampleInputPassword").addClass("is-invalid");
             $("#authValPassword").append("<p>Необходимо заполнить поле</p>");
+            flag = false;
         }
     } else {
         if ($("#exampleInputPassword").hasClass("is-invalid")) {
             $("#exampleInputPassword").removeClass("is-invalid");
             $("#authValPassword").empty();
         }
+    }
+
+    if(!flag){
+        return;
     }
 
     let request = {
@@ -344,11 +358,13 @@ function registration() {
     let name = $("#exampleInputName").val().trim();
     let pass1 = $("#exampleInputPassword1").val().trim();
     let pass2 = $("#exampleInputPassword2").val().trim();
+    let flag = true;
 
     if (!email) {
         if (!$("#exampleInputEmail1").hasClass("is-invalid")) {
             $("#exampleInputEmail1").addClass("is-invalid");
             $("#regValEmail").append("<p>Необходимо заполнить поле</p>");
+            flag = false;
         }
     } else {
         if ($("#exampleInputEmail1").hasClass("is-invalid")) {
@@ -360,6 +376,7 @@ function registration() {
         if (!$("#exampleInputName").hasClass("is-invalid")) {
             $("#exampleInputName").addClass("is-invalid");
             $("#regValName").append("<p>Необходимо заполнить поле</p>");
+            flag = false;
         }
     } else {
         if ($("#exampleInputName").hasClass("is-invalid")) {
@@ -371,6 +388,7 @@ function registration() {
         if (!$("#exampleInputPassword1").hasClass("is-invalid")) {
             $("#exampleInputPassword1").addClass("is-invalid");
             $("#regValPassword1").append("<p>Необходимо заполнить поле</p>");
+            flag = false;
         }
     } else {
         if ($("#exampleInputPassword1").hasClass("is-invalid")) {
@@ -382,6 +400,7 @@ function registration() {
         if (!$("#exampleInputPassword2").hasClass("is-invalid")) {
             $("#exampleInputPassword2").addClass("is-invalid");
             $("#regValPassword2").append("<p>Необходимо заполнить поле</p>");
+            flag = false;
         }
     } else {
         if ($("#exampleInputPassword2").hasClass("is-invalid")) {
@@ -393,6 +412,7 @@ function registration() {
                 $("#exampleInputPassword1").addClass("is-invalid");
                 $("#exampleInputPassword2").addClass("is-invalid");
                 $("#regValPassword2").append("<p>Пароли не совпадают</p>");
+                flag = false;
             }
         } else {
             if ($("#exampleInputPassword1").hasClass("is-invalid") && $("#exampleInputPassword2").hasClass("is-invalid")) {
@@ -400,6 +420,10 @@ function registration() {
                 $("#regValPassword2").empty();
             }
         }
+    }
+
+    if(!flag){
+        return;
     }
 
     let request = {
@@ -430,7 +454,7 @@ function registration() {
 
             403:
                 function (data) {
-                    if ($("#registerModalDialog").find(".error").children().length === 0) {
+                    if($("#registerModalDialog").find(".error").children().length === 0) {
                         let html = "<div id='error' class=\"alert alert-danger\" role=\"alert\">" +
                             "Возникла ошибка при регистрации!" +
                             "</div>";
@@ -441,6 +465,41 @@ function registration() {
         }
     });
 }
+
+function closeModalReg(){
+    $("#exampleInputEmail1").val("");
+    $("#exampleInputName").val("");
+    $("#exampleInputPassword1").val("");
+    $("#exampleInputPassword2").val("");
+
+    $("#exampleInputEmail1").removeClass("is-invalid");
+    $("#regValEmail").empty();
+    $("#exampleInputName").removeClass("is-invalid");
+    $("#regValName").empty();
+    $("#exampleInputPassword1").removeClass("is-invalid");
+    $("#regValPassword1").empty();
+    $("#exampleInputPassword2").removeClass("is-invalid");
+    $("#regValPassword2").empty();
+
+    $(".error").empty();
+
+    $("#registration").modal('hide');
+}
+
+function closeModalAuth(){
+    $("#exampleInputEmail").val("");
+    $("#exampleInputPassword").val("");
+
+    $("#exampleInputEmail").removeClass("is-invalid");
+    $("#authValEmail").empty();
+    $("#exampleInputPassword").removeClass("is-invalid");
+    $("#authValPassword").empty();
+
+    $(".error").empty();
+
+    $("#authorization").modal('hide');
+}
+
 
 function showAdvert(advertisement) {
     let advertId = $(advertisement).find("#idAdvert")[0].innerHTML;
