@@ -213,24 +213,29 @@ function authorization(){
         url: "/api/account/authenticate",
         dataType: "json",
         data: JSON.stringify(request),
-        success: function (data) {
-            if($("#authorModalDialog").find("#error") != null) {
-                $("#authorModalDialog").find("#error").remove();
-            }
-            localStorage.setItem('token', data.token);
-            $("#authorization").modal('hide');
-            $("#navbarCollapse").children().remove();
-            //TODO выводить имя пользователя
-            $("#navbarCollapse").append("<a class=\"navbar-brand\" href=\"#\">" + "Я" + "</a>");
-        },
-        error: function (e) {
-            if($("#authorModalDialog").find("#error") === null) {
-                let html = "<div id='error' class=\"alert alert-danger\" role=\"alert\">" +
-                    "Возникла ошибка при регистрации!" +
-                    "</div>";
-                $("#authorModalDialog").append(html);
-            }
-            console.log(e);
+        statusCode: {
+            200:
+                function (data) {
+                    if($("#authorModalDialog").find(".error").children().length > 0) {
+                        $("#authorModalDialog").find("#error").remove();
+                    }
+                    localStorage.setItem('token', data.token);
+                    $("#authorization").modal('hide');
+                    $("#navbarCollapse").children().remove();
+                    //TODO выводить имя пользователя
+                    $("#navbarCollapse").append("<a class=\"navbar-brand\" href=\"#\">" + "Я" + "</a>");
+                },
+            403:
+                function (data) {
+                    console.log($("#authorModalDialog").find(".error").children().length === 0);
+                    if($("#authorModalDialog").find(".error").children().length === 0) {
+                        let html = "<div id='error' class=\"alert alert-danger\" role=\"alert\">" +
+                            "Возникла ошибка при авторизации!" +
+                            "</div>";
+                        $(".error").append(html);
+                    }
+                    console.log(data);
+                }
         }
     });
 }
@@ -315,24 +320,29 @@ function registration(){
         url: "/api/account/register",
         dataType: "json",
         data: JSON.stringify(request),
-        success: function (data) {
-            if($("#registerModalDialog").find("#error") != null) {
-                $("#registerModalDialog").find("#error").remove();
-            }
-            localStorage.setItem('token', data.token);
-            $("#registration").modal('hide');
-            $("#navbarCollapse").children().remove();
-            //TODO выводить имя пользователя
-            $("#navbarCollapse").append("<a class=\"navbar-brand\" href=\"#\">" + "Я" + "</a>");
-        },
-        error: function (e) {
-            if($("#registerModalDialog").find("#error") === null) {
-                let html = "<div id='error' class=\"alert alert-danger\" role=\"alert\">" +
-                    "Возникла ошибка при регистрации!" +
-                    "</div>";
-                $("#registerModalDialog").append(html);
-            }
-            console.log(e);
+        statusCode: {
+            200:
+                function (data) {
+                    if($("#registerModalDialog").find(".error").children().length > 0) {
+                        $("#registerModalDialog").find("#error").remove();
+                    }
+                    localStorage.setItem('token', data.token);
+                    $("#registration").modal('hide');
+                    $("#navbarCollapse").children().remove();
+                    //TODO выводить имя пользователя
+                    $("#navbarCollapse").append("<a class=\"navbar-brand\" href=\"#\">" + "Я" + "</a>");
+                },
+
+            403:
+                function (data) {
+                    if($("#registerModalDialog").find(".error").children().length === 0) {
+                        let html = "<div id='error' class=\"alert alert-danger\" role=\"alert\">" +
+                            "Возникла ошибка при регистрации!" +
+                            "</div>";
+                        $(".error").append(html);
+                    }
+                    console.log(data);
+                }
         }
     });
 }

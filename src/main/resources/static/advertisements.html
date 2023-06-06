@@ -56,6 +56,7 @@
                             <div id="regValPassword2" class="invalid-feedback"></div>
                         </div>
                     </form>
+                    <div class="error"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
@@ -86,6 +87,7 @@
                             <div id="authValPassword" class="invalid-feedback"></div>
                         </div>
                     </form>
+                    <div class="error"></div>
                 </div>
                 <div class="modal-footer">
                     <div id="authVal" class="invalid-feedback"></div>
@@ -105,6 +107,9 @@
             </div>
         </div>-->
         <div id="categoryListAdverts" class="row"></div>
+        <div class="headerMain row justify-content-center">
+            <button type="button" class="addAdvertisement btn btn-primary" onclick="createAdvertisement()">Подать заявление</button>
+        </div>
         <div id="listAdverts" class="advertisementsOfTheme row">
             <!--<div class="row advert">
                 <div class="card mb-3 cardAdvert" onclick="showAdvert()">
@@ -197,8 +202,8 @@
                     </li>-->
                 </ul>
             </div>
-
         </div>
+        <div id="listEmpty" class="row justify-content-center"></div>
     </div>
 </main>
 <footer class="footer fixed-bottom bg-light">

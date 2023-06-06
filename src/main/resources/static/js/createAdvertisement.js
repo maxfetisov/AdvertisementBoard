@@ -143,9 +143,7 @@ function create(){
 }
 
 function cancel(){
-    //TODO возможно стоит сделать переадресацию на предыдущую страницу, т.к. при открытии только этой страницы закрытие вкладки не работает
-
-    window.close();
+    location.assign("/advertisements");
 }
 
 function remove(){
