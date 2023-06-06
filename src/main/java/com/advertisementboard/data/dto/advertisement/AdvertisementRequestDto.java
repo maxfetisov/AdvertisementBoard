@@ -12,6 +12,8 @@ import lombok.NonNull;
 @Builder
 public class AdvertisementRequestDto {
 
+    private Long id;
+
     @NonNull
     private String heading;
 

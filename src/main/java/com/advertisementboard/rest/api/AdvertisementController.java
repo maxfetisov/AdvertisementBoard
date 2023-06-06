@@ -70,14 +70,17 @@ public class AdvertisementController {
     @PutMapping
     public ResponseEntity<?> updateAdvertisement(
             final Authentication authentication,
-            @RequestBody final AdvertisementDto request
+            @RequestBody final AdvertisementRequestDto request
     ) {
         User user = (User)authentication.getPrincipal();
         if(!(user.getRole().getName().equals(UserRole.ADMINISTRATOR.name())
                 || List.of(UserRole.USER.name(), UserRole.MODERATOR.name()).contains(user.getRole().getName())
                 && advertisementService.getAdvertisement(request.getId()).getUser().getLogin().equals(user.getLogin())))
             throw new NoPrivilegeException();
-        advertisementService.updateAdvertisement(request);
+        advertisementService.updateAdvertisement(
+                advertisementRequestMapper.advertisementRequestDtoToAdvertisementDto(request),
+                userService.getUser(((User)authentication.getPrincipal()).getLogin())
+        );
         return ResponseEntity.ok().build();
     }
 
