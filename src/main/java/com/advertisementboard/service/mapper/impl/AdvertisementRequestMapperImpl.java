@@ -14,14 +14,14 @@ public class AdvertisementRequestMapperImpl implements AdvertisementRequestMappe
 
     private final CategoryService categoryService;
 
-    private final UserService userService;
-
     @Override
     public AdvertisementDto advertisementRequestDtoToAdvertisementDto(AdvertisementRequestDto advertisementRequestDto) {
         return AdvertisementDto.builder()
                 .heading(advertisementRequestDto.getHeading())
                 .text(advertisementRequestDto.getText())
                 .category(categoryService.getCategory(advertisementRequestDto.getCategoryId()))
+                .contacts(advertisementRequestDto.getContacts())
+                .url(advertisementRequestDto.getUrl())
                 .build();
     }
 
@@ -31,6 +31,8 @@ public class AdvertisementRequestMapperImpl implements AdvertisementRequestMappe
                 .heading(advertisementDto.getHeading())
                 .text(advertisementDto.getText())
                 .categoryId(advertisementDto.getCategory().getId())
+                .contacts(advertisementDto.getContacts())
+                .url(advertisementDto.getUrl())
                 .build();
     }
 
