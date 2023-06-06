@@ -48,7 +48,6 @@ function initChapter(){
         url: "/api/categories",
         dataType: 'json',
         success: function (data) {
-            let i = 1;
             data.forEach((category) => {
                 $("#chapter").append("<option>" + category.name + "</option>");
             })

@@ -239,6 +239,38 @@ function authorization(){
             $("#authValPassword").empty();
         }
     }
+
+    let request = {
+        login: email,
+        password: pass
+    }
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/api/account/authenticate",
+        dataType: "json",
+        data: JSON.stringify(request),
+        success: function (data) {
+            if($("#authorModalDialog").find("#error") != null) {
+                $("#authorModalDialog").find("#error").remove();
+            }
+            localStorage.setItem('token', data.token);
+            $("#authorization").modal('hide');
+            $("#navbarCollapse").children().remove();
+            //TODO выводить имя пользователя
+            $("#navbarCollapse").append("<a class=\"navbar-brand\" href=\"#\">" + "Я" + "</a>");
+        },
+        error: function (e) {
+            if($("#authorModalDialog").find("#error") === null) {
+                let html = "<div id='error' class=\"alert alert-danger\" role=\"alert\">" +
+                    "Возникла ошибка при регистрации!" +
+                    "</div>";
+                $("#authorModalDialog").append(html);
+            }
+            console.log(e);
+        }
+    });
 }
 
 function registration(){
@@ -308,6 +340,39 @@ function registration(){
             }
         }
     }
+
+    let request = {
+        login: email,
+        name: name,
+        password: pass1
+    }
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/api/account/register",
+        dataType: "json",
+        data: JSON.stringify(request),
+        success: function (data) {
+            if($("#registerModalDialog").find("#error") != null) {
+                $("#registerModalDialog").find("#error").remove();
+            }
+            localStorage.setItem('token', data.token);
+            $("#registration").modal('hide');
+            $("#navbarCollapse").children().remove();
+            //TODO выводить имя пользователя
+            $("#navbarCollapse").append("<a class=\"navbar-brand\" href=\"#\">" + "Я" + "</a>");
+        },
+        error: function (e) {
+            if($("#registerModalDialog").find("#error") === null) {
+                let html = "<div id='error' class=\"alert alert-danger\" role=\"alert\">" +
+                    "Возникла ошибка при регистрации!" +
+                    "</div>";
+                $("#registerModalDialog").append(html);
+            }
+            console.log(e);
+        }
+    });
 }
 
 function showAdvert(advertisement){
