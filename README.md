@@ -4,3 +4,5 @@
 ```
 docker-compose -f docker/docker-compose.yml up
 ```
+### Просмотр проекта
+[Стартовая страница](http://localhost:8080/home)
