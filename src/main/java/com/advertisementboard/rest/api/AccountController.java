@@ -6,6 +6,8 @@ import com.advertisementboard.data.dto.authentication.RegistrationRequestDto;
 import com.advertisementboard.data.dto.role.RoleDto;
 import com.advertisementboard.data.dto.user.UserDto;
 import com.advertisementboard.data.entity.User;
+import com.advertisementboard.exception.athentication.NoAuthenticationException;
+import com.advertisementboard.exception.role.NoPrivilegeException;
 import com.advertisementboard.service.account.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,8 @@ public class AccountController {
 
     @GetMapping
     public ResponseEntity<UserDto> getAccount(final Authentication authentication) {
+        if(authentication == null)
+            throw new NoAuthenticationException();
         final User user = (User) authentication.getPrincipal();
         return ResponseEntity.ok(UserDto.builder()
                 .login(user.getLogin())

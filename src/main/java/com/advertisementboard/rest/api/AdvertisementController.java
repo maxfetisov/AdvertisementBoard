@@ -6,6 +6,7 @@ import com.advertisementboard.data.dto.advertisement.AdvertisementPageResponseDt
 import com.advertisementboard.data.dto.advertisement.AdvertisementRequestDto;
 import com.advertisementboard.data.entity.User;
 import com.advertisementboard.data.enumeration.UserRole;
+import com.advertisementboard.exception.athentication.NoAuthenticationException;
 import com.advertisementboard.exception.role.NoPrivilegeException;
 import com.advertisementboard.service.advertisement.AdvertisementService;
 import com.advertisementboard.service.mapper.AdvertisementRequestMapper;
@@ -58,6 +59,8 @@ public class AdvertisementController {
             final Authentication authentication,
             @RequestBody final AdvertisementRequestDto request
     ) {
+        if(authentication == null)
+            throw new NoAuthenticationException();
         return new ResponseEntity<>(
                 advertisementService.createAdvertisement(
                         advertisementRequestMapper.advertisementRequestDtoToAdvertisementDto(request),
@@ -72,6 +75,8 @@ public class AdvertisementController {
             final Authentication authentication,
             @RequestBody final AdvertisementRequestDto request
     ) {
+        if(authentication == null)
+            throw new NoAuthenticationException();
         User user = (User)authentication.getPrincipal();
         if(!(user.getRole().getName().equals(UserRole.ADMINISTRATOR.name())
                 || List.of(UserRole.USER.name(), UserRole.MODERATOR.name()).contains(user.getRole().getName())
@@ -89,6 +94,8 @@ public class AdvertisementController {
             final Authentication authentication,
             @PathVariable("id") final Long id
     ) {
+        if(authentication == null)
+            throw new NoAuthenticationException();
         User user = (User)authentication.getPrincipal();
         if(!(user.getRole().getName().equals(UserRole.ADMINISTRATOR.name())
         || List.of(UserRole.USER.name(), UserRole.MODERATOR.name()).contains(user.getRole().getName())

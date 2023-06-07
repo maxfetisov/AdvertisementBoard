@@ -1,5 +1,6 @@
 package com.advertisementboard.rest.advice;
 
+import com.advertisementboard.exception.athentication.NoAuthenticationException;
 import com.advertisementboard.exception.entity.EntityException;
 import com.advertisementboard.exception.role.NoPrivilegeException;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,12 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(NoPrivilegeException.class)
     public ResponseEntity<?> noPrivilegeExceptionHandler(final NoPrivilegeException exception){
+        log.info(exception.getMessage());
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(NoAuthenticationException.class)
+    public ResponseEntity<?> noAuthenticationExceptionHandler(final NoAuthenticationException exception){
         log.info(exception.getMessage());
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.FORBIDDEN);
     }
