@@ -132,7 +132,7 @@ function initAdvertisements(curPage, pageSize) {
                     "<h5 class=\"card-title\">" + advert.heading + "</h5>" +
                     "<p class=\"card-text\">" + advert.text + "</p>" +
                     "<p id=\"idAdvert\" class=\"card-text\" style=\"visibility: hidden\">" + advert.id + "</p>" +
-                    "<p class=\"card-text\"><small class=\"text-body-secondary\">" + advert.user.name + "</small></p>" +
+                    "<p class=\"card-text\"><small class=\"text-body-secondary\">" + advert.contacts + "</small></p>" +
                     "</div>" +
                     "</div>" +
                     "</div>" +
