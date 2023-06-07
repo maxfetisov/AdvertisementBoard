@@ -167,7 +167,7 @@ function initPage(){
                 "<span aria-hidden=\"true\">&laquo;</span>" +
                 "</a>" +
                 "</li>";
-            for(let i = 0; i < pageCount && i < pageSize; i++){
+            for(let i = 0; i < pageCount; i++){
                 html += "<li class=\"page-item\" id=\"page_" + i + "\" onclick=\"pageChange(" + i + ")\"><a class=\"page-link\" href=\"#\">" + (i+1) + "</a></li>";
             }
             html += "<li class=\"page-item\" id=\"page_next\" onclick=\"pageNext(this)\">" +

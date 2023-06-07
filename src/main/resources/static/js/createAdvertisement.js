@@ -267,9 +267,14 @@ function create() {
     });
 }
 
-function cancel(){
-    localStorage.setItem('advertId', "");
-    location.assign("/advertisements");
+function cancel() {
+    if (localStorage.getItem('category') === null) {
+        localStorage.setItem('advertId', "");
+        location.assign("/home");
+    } else {
+        localStorage.setItem('advertId', "");
+        location.assign('/advertisements');
+    }
 }
 
 function update(){
