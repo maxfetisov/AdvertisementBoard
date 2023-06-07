@@ -64,9 +64,11 @@ function checkToken(){
                         account = "";
                         localStorage.setItem('token', "");
                         if(localStorage.getItem('category') === null){
+                            localStorage.setItem('advertId', "");
                             location.assign("/home");
                         }
                         else{
+                            localStorage.setItem('advertId', "");
                             location.assign('/advertisements');
                         }
                         console.log(e);
@@ -76,9 +78,11 @@ function checkToken(){
     }
     else{
         if(localStorage.getItem('category') === null){
+            localStorage.setItem('advertId', "");
             location.assign("/home");
         }
         else{
+            localStorage.setItem('advertId', "");
             location.assign('/advertisements');
         }
     }
@@ -94,9 +98,11 @@ function drawLogin(){
 function exit(){
     localStorage.setItem('token', "");
     if(localStorage.getItem('category') === null){
+        localStorage.setItem('advertId', "");
         location.assign("/home");
     }
     else{
+        localStorage.setItem('advertId', "");
         location.assign('/advertisements');
     }
 }
@@ -141,6 +147,7 @@ function initCategories(){
 
 function categoryOpenPage(elem){
     localStorage.setItem('category', $(elem).attr('id'));
+    localStorage.setItem('advertId', "");
     location.assign("/advertisements");
 }
 
@@ -241,9 +248,11 @@ function create() {
                     const toast = new bootstrap.Toast(document.getElementById('liveToast'));
                     toast.show();
                     if(localStorage.getItem('category') === null){
+                        localStorage.setItem('advertId', "");
                         location.assign("/home");
                     }
                     else{
+                        localStorage.setItem('advertId', "");
                         location.assign('/advertisements');
                     }
                 },
@@ -259,6 +268,7 @@ function create() {
 }
 
 function cancel(){
+    localStorage.setItem('advertId', "");
     location.assign("/advertisements");
 }
 
@@ -340,9 +350,11 @@ function update(){
                     const toast = new bootstrap.Toast(document.getElementById('liveToast'));
                     toast.show();
                     if(localStorage.getItem('category') === null){
+                        localStorage.setItem('advertId', "");
                         location.assign("/home");
                     }
                     else{
+                        localStorage.setItem('advertId', "");
                         location.assign('/advertisements');
                     }
                 },
@@ -382,9 +394,11 @@ function remove(){
                         const toast = new bootstrap.Toast(document.getElementById('liveToast'));
                         toast.show();
                         if(localStorage.getItem('category') === null){
+                            localStorage.setItem('advertId', "");
                             location.assign("/home");
                         }
                         else{
+                            localStorage.setItem('advertId', "");
                             location.assign('/advertisements');
                         }
                     },

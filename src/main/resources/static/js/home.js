@@ -1,6 +1,7 @@
 var account = "";
 
 onload = function () {
+    localStorage.setItem('advertId', "");
     checkToken();
     initCategories();
     initContacts();
