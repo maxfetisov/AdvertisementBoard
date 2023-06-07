@@ -5,5 +5,5 @@ COPY pom.xml /app/pom.xml
 RUN mvn -f /app/pom.xml clean package
 
 FROM openjdk:19
-COPY --from=build ./target/*.jar app.jar
-ENTRYPOINT ["java","-jar","/app/app.jar"]
+COPY --from=build ./app/target/*.jar app.jar
+ENTRYPOINT ["java","-jar","app.jar"]
