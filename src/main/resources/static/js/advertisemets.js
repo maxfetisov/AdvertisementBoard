@@ -173,8 +173,8 @@ function initPage() {
                 "<span aria-hidden=\"true\">&laquo;</span>" +
                 "</a>" +
                 "</li>";
-            for (let i = 0; i < pageCount; i++) {
-                html += "<li class=\"page-item\" id=\"page_" + i + "\" onclick=\"pageChange(" + i + ")\"><a class=\"page-link\" href=\"#\">" + (i + 1) + "</a></li>";
+            for(let i = 0; i < pageCount; i++){
+                html += "<li class=\"page-item\" id=\"page_" + i + "\" onclick=\"pageChange(" + i + ")\"><a class=\"page-link\" href=\"#\">" + (i+1) + "</a></li>";
             }
             html += "<li class=\"page-item\" id=\"page_next\" onclick=\"pageNext(this)\">" +
                 "<a class=\"page-link\" href=\"#\" aria-label=\"Next\">" +
@@ -335,7 +335,6 @@ function authorization() {
         statusCode: {
             200:
                 function (data) {
-                    //FIXME не исчезает уведомление при переходе в другое окно
                     if ($("#authorModalDialog").find(".error").children().length > 0) {
                         $("#authorModalDialog").find("#error").remove();
                     }
