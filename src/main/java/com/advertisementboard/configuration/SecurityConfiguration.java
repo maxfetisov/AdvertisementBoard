@@ -34,7 +34,6 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-
         httpSecurity.csrf()
                 .disable()
                 .authorizeHttpRequests()
@@ -48,22 +47,21 @@ public class SecurityConfiguration {
                         "/image/**",
                         "/api/contacts",
                         "/api/advertisements/filter",
-                        "/api/advertisements/{id}",
+                        "/api/advertisements/*",
                         "/api/advertisements",
                         "/favicon.ico",
                         "/webjars/jquery/3.6.4/jquery.min.js"
                 ).permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/categories").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/api/advertisements/*/**")
+                .hasAnyAuthority(UserRole.ADMINISTRATOR.name(), UserRole.MODERATOR.name())
+                .requestMatchers(HttpMethod.GET, "/api/categories")
+                .permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/categories")
-                .hasRole(UserRole.ADMINISTRATOR.name())
+                .hasAuthority(UserRole.ADMINISTRATOR.name())
                 .requestMatchers(HttpMethod.PUT, "/api/categories")
-                .hasRole(UserRole.ADMINISTRATOR.name())
-                .requestMatchers(HttpMethod.DELETE, "/api/categories")
-                .hasRole(UserRole.ADMINISTRATOR.name())
-                .requestMatchers(HttpMethod.PUT, "/api/advertisements/{id}/reject")
-                .hasAnyRole(UserRole.MODERATOR.name(), UserRole.ADMINISTRATOR.name())
-                .requestMatchers(HttpMethod.PUT, "/api/advertisements/{id}/confirm")
-                .hasAnyRole(UserRole.MODERATOR.name(), UserRole.ADMINISTRATOR.name())
+                .hasAuthority(UserRole.ADMINISTRATOR.name())
+                .requestMatchers(HttpMethod.DELETE, "/api/categories/*")
+                .hasAuthority(UserRole.ADMINISTRATOR.name())
                 .anyRequest()
                 .authenticated()
                 .and()

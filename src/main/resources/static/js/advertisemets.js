@@ -97,6 +97,7 @@ function initAdvertisements(curPage, pageSize) {
     let request = {
         page: curPage,
         pageSize: pageSize,
+        sortField: "heading",
         categoryFilter: localStorage.getItem('category')
     };
 
