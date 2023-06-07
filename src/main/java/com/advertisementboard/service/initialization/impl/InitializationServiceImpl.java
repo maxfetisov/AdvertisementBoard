@@ -68,7 +68,7 @@ public class InitializationServiceImpl implements InitializationService {
                         .name("Зарубежная недвижимость")
                         .description("Описание зарубежной недвижимости")
                         .build()
-        ).forEach(this::initializeCategory);//FIXME вынести в конфиг
+        ).forEach(this::initializeCategory);
     }
 
     private void initializeRoles() {
@@ -83,7 +83,7 @@ public class InitializationServiceImpl implements InitializationService {
                         .password("admin")
                         .build(),
                 roleService.getRoleByName(UserRole.ADMINISTRATOR)
-                );
+        );
         initializeUser(
                 RegistrationRequestDto.builder()
                         .login("moderator")

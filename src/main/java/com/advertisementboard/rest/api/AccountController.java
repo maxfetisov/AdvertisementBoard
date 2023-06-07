@@ -7,7 +7,6 @@ import com.advertisementboard.data.dto.role.RoleDto;
 import com.advertisementboard.data.dto.user.UserDto;
 import com.advertisementboard.data.entity.User;
 import com.advertisementboard.exception.athentication.NoAuthenticationException;
-import com.advertisementboard.exception.role.NoPrivilegeException;
 import com.advertisementboard.service.account.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -16,7 +16,7 @@ public class ContactsController {
     private Map<String, String> contacts;
 
     @GetMapping
-    public ResponseEntity<Map<String, String>> getContacts(){
+    public ResponseEntity<Map<String, String>> getContacts() {
         return ResponseEntity.ok().body(contacts);
     }
 

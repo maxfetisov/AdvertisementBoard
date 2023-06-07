@@ -1,6 +1,6 @@
 package com.advertisementboard.exception.entity;
 
-public class EntityAlreadyExistException extends EntityException{
+public class EntityAlreadyExistException extends EntityException {
 
     public static final String DEFAULT_MESSAGE = "The entity %s already exists";
 

@@ -25,22 +25,22 @@ public class JwtServiceImpl implements JwtService {
     private Long expiration;
 
     @Override
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+    public <T> T extractClaim(final String token, final Function<Claims, T> claimsResolver) {
         return claimsResolver.apply(extractClaims(token));
     }
 
     @Override
-    public String extractLogin(String token) {
+    public String extractLogin(final String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
     @Override
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(final UserDetails userDetails) {
         return generateToken(userDetails, Map.of());
     }
 
     @Override
-    public String generateToken(UserDetails userDetails, Map<String, Object> extraClaims) {
+    public String generateToken(final UserDetails userDetails, final Map<String, Object> extraClaims) {
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
@@ -51,20 +51,20 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public boolean isTokenValid(String token, UserDetails userDetails) {
+    public boolean isTokenValid(final String token, final UserDetails userDetails) {
         return userDetails.getUsername().equals(extractLogin(token)) && !isTokenExpired(token);
     }
 
     @Override
-    public boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(final String token) {
         return extractExpiration(token).before(new Date(System.currentTimeMillis()));
     }
 
-    private Date extractExpiration(String token){
+    private Date extractExpiration(final String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    private Claims extractClaims(String token){
+    private Claims extractClaims(final String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()

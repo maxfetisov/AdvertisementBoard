@@ -3,7 +3,6 @@ package com.advertisementboard.service.mapper.impl;
 import com.advertisementboard.data.dto.advertisement.AdvertisementDto;
 import com.advertisementboard.data.dto.advertisement.AdvertisementRequestDto;
 import com.advertisementboard.service.category.CategoryService;
-import com.advertisementboard.service.user.UserService;
 import com.advertisementboard.service.mapper.AdvertisementRequestMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -15,7 +14,9 @@ public class AdvertisementRequestMapperImpl implements AdvertisementRequestMappe
     private final CategoryService categoryService;
 
     @Override
-    public AdvertisementDto advertisementRequestDtoToAdvertisementDto(AdvertisementRequestDto advertisementRequestDto) {
+    public AdvertisementDto advertisementRequestDtoToAdvertisementDto(
+            final AdvertisementRequestDto advertisementRequestDto
+    ) {
         return AdvertisementDto.builder()
                 .id(advertisementRequestDto.getId())
                 .heading(advertisementRequestDto.getHeading())
@@ -27,7 +28,7 @@ public class AdvertisementRequestMapperImpl implements AdvertisementRequestMappe
     }
 
     @Override
-    public AdvertisementRequestDto advertisementDtoToAdvertisementRequestDto(AdvertisementDto advertisementDto) {
+    public AdvertisementRequestDto advertisementDtoToAdvertisementRequestDto(final AdvertisementDto advertisementDto) {
         return AdvertisementRequestDto.builder()
                 .id(advertisementDto.getId())
                 .heading(advertisementDto.getHeading())

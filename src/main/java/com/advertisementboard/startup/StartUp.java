@@ -12,7 +12,7 @@ public class StartUp implements CommandLineRunner {
     private final InitializationService initializationService;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(final String... args) throws Exception {
         initializationService.initialize();
     }
 

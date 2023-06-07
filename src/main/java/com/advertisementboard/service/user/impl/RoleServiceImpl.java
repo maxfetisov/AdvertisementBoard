@@ -19,14 +19,14 @@ public class RoleServiceImpl implements RoleService {
     private final RoleMapper roleMapper;
 
     @Override
-    public Integer createRole(RoleDto role) {
-        if(roleRepository.existsByName(role.getName()))
+    public Integer createRole(final RoleDto role) {
+        if (roleRepository.existsByName(role.getName()))
             throw new EntityAlreadyExistException(role.toString());
         return roleRepository.save(roleMapper.roleDtoToRole(role)).getId();
     }
 
     @Override
-    public RoleDto getRoleByName(UserRole name) {
+    public RoleDto getRoleByName(final UserRole name) {
         return roleMapper.roleToRoleDto(roleRepository.findByName(name.toString()).orElseThrow(()
                 -> new EntityNotExistException("name", name.toString())));
     }

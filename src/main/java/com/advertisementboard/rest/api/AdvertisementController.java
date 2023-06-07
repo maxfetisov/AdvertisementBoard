@@ -59,12 +59,12 @@ public class AdvertisementController {
             final Authentication authentication,
             @RequestBody final AdvertisementRequestDto request
     ) {
-        if(authentication == null)
+        if (authentication == null)
             throw new NoAuthenticationException();
         return new ResponseEntity<>(
                 advertisementService.createAdvertisement(
                         advertisementRequestMapper.advertisementRequestDtoToAdvertisementDto(request),
-                        userService.getUser(((User)authentication.getPrincipal()).getLogin())
+                        userService.getUser(((User) authentication.getPrincipal()).getLogin())
                 ),
                 HttpStatus.CREATED
         );
@@ -75,16 +75,16 @@ public class AdvertisementController {
             final Authentication authentication,
             @RequestBody final AdvertisementRequestDto request
     ) {
-        if(authentication == null)
+        if (authentication == null)
             throw new NoAuthenticationException();
-        User user = (User)authentication.getPrincipal();
-        if(!(user.getRole().getName().equals(UserRole.ADMINISTRATOR.name())
+        User user = (User) authentication.getPrincipal();
+        if (!(user.getRole().getName().equals(UserRole.ADMINISTRATOR.name())
                 || List.of(UserRole.USER.name(), UserRole.MODERATOR.name()).contains(user.getRole().getName())
                 && advertisementService.getAdvertisement(request.getId()).getUser().getLogin().equals(user.getLogin())))
             throw new NoPrivilegeException();
         advertisementService.updateAdvertisement(
                 advertisementRequestMapper.advertisementRequestDtoToAdvertisementDto(request),
-                userService.getUser(((User)authentication.getPrincipal()).getLogin())
+                userService.getUser(((User) authentication.getPrincipal()).getLogin())
         );
         return ResponseEntity.ok().build();
     }
@@ -94,11 +94,11 @@ public class AdvertisementController {
             final Authentication authentication,
             @PathVariable("id") final Long id
     ) {
-        if(authentication == null)
+        if (authentication == null)
             throw new NoAuthenticationException();
-        User user = (User)authentication.getPrincipal();
-        if(!(user.getRole().getName().equals(UserRole.ADMINISTRATOR.name())
-        || List.of(UserRole.USER.name(), UserRole.MODERATOR.name()).contains(user.getRole().getName())
+        User user = (User) authentication.getPrincipal();
+        if (!(user.getRole().getName().equals(UserRole.ADMINISTRATOR.name())
+                || List.of(UserRole.USER.name(), UserRole.MODERATOR.name()).contains(user.getRole().getName())
                 && advertisementService.getAdvertisement(id).getUser().getLogin().equals(user.getLogin())))
             throw new NoPrivilegeException();
         advertisementService.deleteAdvertisement(id);

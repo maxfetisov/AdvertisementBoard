@@ -39,7 +39,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AuthenticationResponseDto register(final RegistrationRequestDto request, RoleDto role) {
+    public AuthenticationResponseDto register(final RegistrationRequestDto request, final RoleDto role) {
         UserDto user = UserDto.builder()
                 .login(request.getLogin())
                 .password(passwordEncoder.encode(request.getPassword()))

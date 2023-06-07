@@ -22,19 +22,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(final UserDto user) {
-        if(userRepository.existsByLogin(user.getLogin()))
+        if (userRepository.existsByLogin(user.getLogin()))
             throw new EntityAlreadyExistException(user.toString());
         userRepository.save(userMapper.userDtoToUser(user));
     }
 
     @Override
-    public UserDto getUser(String login) {
+    public UserDto getUser(final String login) {
         return userMapper.userToUserDto(userRepository.findByLogin(login).orElseThrow(()
                 -> new EntityNotExistException(login)));
     }
 
     @Override
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(final String login) throws UsernameNotFoundException {
         return userRepository.findByLogin(login).orElseThrow(()
                 -> new UsernameNotFoundException(login));
     }

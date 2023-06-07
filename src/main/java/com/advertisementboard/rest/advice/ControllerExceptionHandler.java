@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ControllerExceptionHandler {
 
     @ExceptionHandler(EntityException.class)
-    public ResponseEntity<?> entityExceptionHandler(final EntityException exception){
+    public ResponseEntity<?> entityExceptionHandler(final EntityException exception) {
         log.info(exception.getMessage());
         return ResponseEntity.badRequest().body(exception.getMessage());
     }
 
     @ExceptionHandler(NoPrivilegeException.class)
-    public ResponseEntity<?> noPrivilegeExceptionHandler(final NoPrivilegeException exception){
+    public ResponseEntity<?> noPrivilegeExceptionHandler(final NoPrivilegeException exception) {
         log.info(exception.getMessage());
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(NoAuthenticationException.class)
-    public ResponseEntity<?> noAuthenticationExceptionHandler(final NoAuthenticationException exception){
+    public ResponseEntity<?> noAuthenticationExceptionHandler(final NoAuthenticationException exception) {
         log.info(exception.getMessage());
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.FORBIDDEN);
     }

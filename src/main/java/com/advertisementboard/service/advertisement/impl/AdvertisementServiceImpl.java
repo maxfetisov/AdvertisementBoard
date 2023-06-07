@@ -105,16 +105,16 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     }
 
     @Override
-    public void rejectAdvertisement(Long id) {
+    public void rejectAdvertisement(final Long id) {
         updateAdvertisementStatus(id, AdvertisementStatus.REJECTED);
     }
 
     @Override
-    public void confirmAdvertisement(Long id) {
+    public void confirmAdvertisement(final Long id) {
         updateAdvertisementStatus(id, AdvertisementStatus.CONFIRMED);
     }
 
-    private void updateAdvertisementStatus(Long id, AdvertisementStatus status) {
+    private void updateAdvertisementStatus(final Long id, final AdvertisementStatus status) {
         AdvertisementDto advertisement = getAdvertisement(id);
         advertisement.setStatus(status);
         advertisementRepository.save(advertisementMapper.advertisementDtoToAdvertisement(advertisement));

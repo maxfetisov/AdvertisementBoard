@@ -1,6 +1,5 @@
 package com.advertisementboard.data.dto.role;
 
-import com.advertisementboard.data.enumeration.UserRole;
 import lombok.Builder;
 import lombok.Data;
 
