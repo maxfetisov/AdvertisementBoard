@@ -1,9 +1,20 @@
 spring:
   datasource:
-    url: jdbc:postgresql://postgres:5432/advertisement-board
+    url: jdbc:postgresql://localhost:5432/advertisement-board
     username: postgres
-    password: 123
+    password: 1234
     driver-class-name: org.postgresql.Driver
   liquibase:
     change-log: changelog/main-changelog.xml
-
+  thymeleaf:
+    prefix: classpath:/static/
+    suffix: .html
+advertisement-board:
+  authorization:
+    secret: "6251655468576D5A7134743777217A25432A46294A404E635266556A586E3272
+"
+    expiration: 86400000
+  contacts: '{
+    phone: "+7 (920) 987-12-23",
+    email: "example@gmail.com"
+  }'
