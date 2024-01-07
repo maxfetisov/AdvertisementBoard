@@ -11,8 +11,7 @@ spring:
     suffix: .html
 advertisement-board:
   authorization:
-    secret: "6251655468576D5A7134743777217A25432A46294A404E635266556A586E3272
-"
+    secret: "6251655468576D5A7134743777217A25432A46294A404E635266556A586E3272"
     expiration: 86400000
   contacts: '{
     phone: "+7 (920) 987-12-23",
